@@ -14,6 +14,8 @@
 
 Built on a legal opinion under German and European law: using `add_action()` and `add_filter()` constitutes API usage. APIs are interfaces. Interfaces do not trigger the GPL copyleft clause. **Your business logic is yours.**
 
+[EU LEGAL (https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32009L0024)]
+
 ---
 
 ## 🔑 Before You Start — The Encryptor
