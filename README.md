@@ -15,6 +15,7 @@
 Built on a legal opinion under German and European law: using `add_action()` and `add_filter()` constitutes API usage. APIs are interfaces. Interfaces do not trigger the GPL copyleft clause. **Your business logic is yours.**
 
 [EU LEGAL (https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32009L0024)]
+And [EuGH C-406/10 (SAS Institute) (https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:62010CC0406)]
 
 ⚖️ Legal Framework: EU Directive 2009/24/EC
 VGT OS and the Sentinel Artifact are architected to comply with the primary legislation of the European Union. Our legal position is based on Directive 2009/24/EC on the legal protection of computer programs.
