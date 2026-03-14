@@ -16,6 +16,29 @@ Built on a legal opinion under German and European law: using `add_action()` and
 
 [EU LEGAL (https://eur-lex.europa.eu/legal-content/DE/TXT/PDF/?uri=CELEX:32009L0024)]
 
+⚖️ Legal Framework: EU Directive 2009/24/EC
+VGT OS and the Sentinel Artifact are architected to comply with the primary legislation of the European Union. Our legal position is based on Directive 2009/24/EC on the legal protection of computer programs.
+
+1. The Definition of Interoperability (Recital 10)
+The Directive explicitly recognizes that software must interact with other components. The parts of a program that provide this interaction are defined as "interfaces". Interoperability is established as the right to the "exchange of information and mutual use of the information exchanged".
+
+2. Exclusion of Interfaces from Protection (Recital 11 & Article 1, Para. 2)
+This is the cornerstone of our strategy. The Directive clarifies that while the expression of a program is protected, the ideas and principles underlying its interfaces are not copyrightable.
+
+Strategic Note: Since WordPress hooks function as APIs (interfaces), their logical structure cannot be copyrighted. Therefore, using them does not trigger an "infection" of your proprietary code.
+
+3. Right to Interoperability (Article 6)
+The Directive expressly permits acts (such as decompilation or the use of code segments) required to obtain the information necessary to achieve the interoperability of an independently created program.
+As Sentinel is an independently created work, we exercise the statutory right to use the necessary interface information from WordPress without being forced to subject our own work to the GPL.
+
+4. Nullity of Contrary Contractual Terms (Article 8, Para. 2)
+Any contractual provisions—including aggressive interpretations of the GPL by third parties—that contradict the mandatory exceptions for interoperability are null and void.
+
+Justitia's Verdict: Statutory EU law overrides any viral "Copyleft" claims that attempt to restrict the interoperability of independent proprietary assets.
+
+Why this matters for VGT OS
+By utilizing the VGT Universal Bridge, we create a clean architectural separation. Your business logic resides in an encrypted vault, while the bridge handles the communication via unprotectable interfaces. This architecture is not just a "workaround"—it is the technical implementation of European Software Law.
+
 ---
 
 ## 🔑 Before You Start — The Encryptor
