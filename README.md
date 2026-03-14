@@ -39,6 +39,15 @@ Any contractual provisions—including aggressive interpretations of the GPL by 
 
 Justitia's Verdict: Statutory EU law overrides any viral "Copyleft" claims that attempt to restrict the interoperability of independent proprietary assets.
 
+The SAS Institute Ruling (ECJ C-406/10)
+This ruling is the ultimate defense against "GPL-Infection" claims. The European Court of Justice ruled that:
+
+Functionality is not Copyrightable: Neither the functionality of a program nor the programming language itself constitutes a copyrightable expression.
+
+The "API-Logic" Exception: The logic of an interface (such as add_action or apply_filters) belongs to the public domain of technical principles, not to the copyright holder of the host system.
+
+Interoperability Sovereignty: An independent program may observe, study, and test the functions of another program to achieve interoperability without infringing on copyright.
+
 Why this matters for VGT OS
 By utilizing the VGT Universal Bridge, we create a clean architectural separation. Your business logic resides in an encrypted vault, while the bridge handles the communication via unprotectable interfaces. This architecture is not just a "workaround"—it is the technical implementation of European Software Law.
 
