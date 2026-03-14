@@ -16,6 +16,32 @@ Built on a legal opinion under German and European law: using `add_action()` and
 
 ---
 
+## 🔑 Before You Start — The Encryptor
+
+VGT OS is the **runtime**. It loads, decrypts, and executes encrypted artifacts in RAM.
+
+To use VGT OS, you need an **encryptor** — a tool that compiles your plugin into an encrypted artifact (`.zip` + `vgt_manifest.vgt`) compatible with the VGT OS format.
+
+**You have two options:**
+
+### Option A — Build Your Own Encryptor
+VGT OS ships with a documented artifact interface specification. Any developer can build a compatible encryptor that produces AES-256-GCM encrypted artifacts with a valid manifest.
+
+The required artifact format is documented in [`ARTIFACT_SPEC.md`](ARTIFACT_SPEC.md).
+
+### Option B — License the VGT APEX Encryptor
+The **VGT APEX Encryptor** is VisionGaia Technology's proprietary compiler. It produces artifacts with:
+- Polymorphic obfuscation (variable scrambling, string fragmentation)
+- AST-level code transformation
+- AES-256-GCM + HKDF-SHA256 + AAD Binding
+- Automated manifest generation
+
+[![Contact for Licensing](https://img.shields.io/badge/APEX_Encryptor-Request_License-10b981?style=for-the-badge)](https://visiongaiatechnology.de)
+
+> VGT OS is free and open. The APEX Encryptor is available under a commercial license.
+
+---
+
 ## 🚨 The Problem VGT OS Solves
 
 For decades, commercial WordPress plugin developers have faced an impossible choice: publish your source code under GPL — or don't use WordPress at all.
@@ -27,11 +53,6 @@ For decades, commercial WordPress plugin developers have faced an impossible cho
 | ❌ Source exposed on every server | ✅ AES-256-GCM — zero plaintext on disk |
 | ❌ Reverse engineering trivial | ✅ Memory Stream — code lives only in RAM |
 | ❌ No standard for plugin IP protection | ✅ Open runtime — your encryptor stays private |
-
-
-
-
-
 
 ---
 
