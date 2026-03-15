@@ -38,6 +38,17 @@ Any contractual provisions—including aggressive interpretations of the GPL by 
 
 Justitia's Verdict: Statutory EU law overrides any viral "Copyleft" claims that attempt to restrict the interoperability of independent proprietary assets.
 
+### NEW ! 
+
+## 🗄️ Case Study: The Database Abstraction Layer ($wpdb)
+The WordPress $wpdb object is a textbook example of a non-copyrightable API interface under Directive 2009/24/EC.
+
+The Technical Reality: $wpdb acts as a bridge between PHP logic and an external MySQL/MariaDB database. It provides standardized methods for data exchange.
+
+The Legal Implication: Under the SAS Institute ruling (C-406/10), the format of data exchange and the functions used to trigger it are functional principles, not creative expressions.
+
+The Conclusion: Using $wpdb to store or retrieve data is a pure act of Interoperability (Article 6). Since the underlying database (MySQL) is independent of WordPress, the logic interacting with it via $wpdb remains a legally distinct and sovereign work.
+
 ### The SAS Institute Ruling (ECJ C-406/10)
 This ruling is the ultimate defense against "GPL-Infection" claims. The European Court of Justice ruled that:
 
