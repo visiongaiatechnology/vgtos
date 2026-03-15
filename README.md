@@ -49,7 +49,7 @@ The Legal Implication: Under the SAS Institute ruling (C-406/10), the format of 
 
 The Conclusion: Using $wpdb to store or retrieve data is a pure act of Interoperability (Article 6). Since the underlying database (MySQL) is independent of WordPress, the logic interacting with it via $wpdb remains a legally distinct and sovereign work.
 
-### The SAS Institute Ruling (ECJ C-406/10)
+## The SAS Institute Ruling (ECJ C-406/10)
 This ruling is the ultimate defense against "GPL-Infection" claims. The European Court of Justice ruled that:
 
 Functionality is not Copyrightable: Neither the functionality of a program nor the programming language itself constitutes a copyrightable expression.
