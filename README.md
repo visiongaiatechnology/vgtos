@@ -297,7 +297,7 @@ Pull requests are welcome. For major changes, please open an issue first.
 - GPG-signed commits strongly recommended
 - No external analytics or tracking code
 - Unit tests for new logic
-- Security vulnerabilities: contact `security@visiongaiatechnology.de` — do NOT open a public issue
+- Security vulnerabilities: contact `info@visiongaia.de` — do NOT open a public issue
 
 Licensed under **GNU AGPLv3** — if you run VGT OS as a hosted service, your modifications must be shared. The copyleft stops at the vault door. What's inside remains yours.
 
