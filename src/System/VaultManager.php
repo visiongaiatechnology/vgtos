@@ -6,7 +6,7 @@ namespace VGT\Omega\System;
 /**
  * STATUS: DIAMANT VGT SUPREME
  * Verwaltet den physikalischen Speicher, HKDF-Verschlüsselung, AAD-Binding und Stream-Mounting.
- * VGT FIX: Single-Source-Of-Truth für RAM State Validation integriert.
+ * VGT FIX: Zero-Trust Path Resolution, Zip Slip Prevention & Memory GC Optimization.
  */
 final class VaultManager {
     private static array $registry = [];
@@ -24,7 +24,7 @@ final class VaultManager {
     }
 
     public static function boot(): void {
-        if (self::$booted) return; // Prevent Double-Boot
+        if (self::$booted) return; 
         self::$booted = true;
 
         self::secureVault();
@@ -56,11 +56,6 @@ final class VaultManager {
      * KRYPTOGRAFIE KERNEL & STATE MANAGEMENT
      * ==================================================================== */
 
-    /**
-     * VGT PLATIN FIX: Single-Source-Of-Truth.
-     * Prüft ob der Key für das Artefakt physisch entschlüsselt im RAM vorliegt.
-     * Verhindert das Split-Brain-Problem zwischen DB-State und RAM-State.
-     */
     public static function isUnlocked(string $id): bool {
         return isset(self::$keys[$id]);
     }
@@ -110,6 +105,8 @@ final class VaultManager {
                         self::$keys[$id] = $key;
                     }
                 }
+                // VGT GC: RAM Freigabe
+                unset($raw, $iv, $tag, $ciphertext, $key);
             }
         }
     }
@@ -160,6 +157,8 @@ final class VaultManager {
             if (!$raw) continue;
 
             $manifest = json_decode($raw, true);
+            unset($raw); // Memory Freigabe
+
             if (!$manifest) continue;
 
             self::$registry[$id] = ['root' => wp_normalize_path($dir), 'map' => $manifest['files'], 'key' => self::$keys[$id]];
@@ -188,7 +187,14 @@ final class VaultManager {
         $ciphertext = substr($content, 28);
         
         $decrypted = openssl_decrypt($ciphertext, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
-        return $decrypted === false ? false : gzdecode($decrypted);
+        unset($content, $ciphertext, $iv, $tag); // VGT Memory Cleanup O(1)
+
+        if ($decrypted === false) return false;
+        
+        $result = gzdecode($decrypted);
+        unset($decrypted); // VGT Memory Cleanup
+        
+        return $result;
     }
 
     /* ====================================================================
@@ -280,12 +286,23 @@ final class VaultManager {
         $raw_key = trim(\sanitize_text_field($_POST['license_key'] ?? $_POST['master_key'] ?? $_POST['key'] ?? ''));
         
         if (empty($file['tmp_name'])) \wp_die('VGT SECURITY: Missing File Data');
-        if (empty($raw_key)) \wp_die('VGT SECURITY: CRITICAL ABORT - Master Key was not transmitted correctly. Check UI Form input names.');
+        if (empty($raw_key)) \wp_die('VGT SECURITY: CRITICAL ABORT - Master Key was not transmitted correctly.');
         
         $vault_dir = self::getBaseDir();
         $zip = new \ZipArchive;
         
         if ($zip->open($file['tmp_name']) === TRUE) {
+            
+            // [ DIAMANT VGT FIX: ZIP SLIP GUARD ]
+            // Verhindert das Extrahieren von Dateien in übergeordnete Verzeichnisse (z.B. ../../../../wp-config.php)
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $info = $zip->statIndex($i);
+                if (str_contains($info['name'], '../') || str_starts_with($info['name'], '/')) {
+                    $zip->close();
+                    \wp_die('VGT SECURITY: CRITICAL - Zip Slip Attack / Path Traversal detected in Archive. Installation Aborted.');
+                }
+            }
+
             $art_id = uniqid('vgt_'); 
             $target = $vault_dir . '/' . $art_id;
             \wp_mkdir_p($target);
@@ -315,7 +332,12 @@ final class VaultManager {
         \check_admin_referer('vgt_action');
         if (!\current_user_can('activate_plugins')) \wp_die('Access Denied');
         
-        $id = \sanitize_text_field($_POST['artifact_id']);
+        // [ DIAMANT VGT FIX: ABSOLUTE DIRECTORY TRAVERSAL PREVENTION ]
+        // Erzwingt, dass die ID NUR der Name des Ordners ist, ohne Pfadbestandteile.
+        $id = basename(\sanitize_text_field($_POST['artifact_id']));
+        
+        if (empty($id) || $id === '.' || $id === '..') \wp_die('VGT SECURITY: Invalid Artifact ID');
+
         $vault_dir = self::getBaseDir();
         self::rrmdir($vault_dir . '/' . $id);
 
@@ -350,7 +372,6 @@ final class VaultManager {
         foreach ($artifacts as $id => $val) {
             $virtual_file = "vgt-protected/{$id}.php";
             
-            // VGT FIX: Nutzt jetzt die RAM-basierte Source-of-Truth Methode
             $is_unlocked = self::isUnlocked($id);
             
             $status_html = $is_unlocked 
@@ -437,7 +458,17 @@ class StreamWrapper {
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
         
-        if ($real_physical === false || $real_root === false || strpos($real_physical, $real_root) !== 0) {
+        // [ DIAMANT VGT FIX: LFI BYPASS VERHINDERUNG ]
+        // Nur Prefix-String-Check reicht nicht. "vgt-vault/plugin1" vs "vgt-vault/plugin1-hack"
+        // Muss zwingend mit DIRECTORY_SEPARATOR enden oder exakt matchen!
+        if ($real_physical === false || $real_root === false) {
+            return false;
+        }
+        
+        $is_inside = str_starts_with($real_physical, $real_root . '/');
+        $is_root   = ($real_physical === $real_root);
+        
+        if (!$is_inside && !$is_root) {
             return false;
         }
 
@@ -448,10 +479,12 @@ class StreamWrapper {
             $decrypted = VaultManager::decryptFile($physical, $reg['key'], true);
             if ($decrypted === false) return false;
             $this->buffer = $decrypted;
+            unset($decrypted); // RAM O(1) Freigabe
         } else {
             $content = file_get_contents($physical);
             if ($content === false) return false;
             $this->buffer = $content;
+            unset($content);
         }
         
         $this->position = 0;
@@ -496,7 +529,8 @@ class StreamWrapper {
 
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
-        if ($real_physical === false || $real_root === false || strpos($real_physical, $real_root) !== 0) {
+        
+        if ($real_physical === false || $real_root === false || (!str_starts_with($real_physical, $real_root . '/') && $real_physical !== $real_root)) {
             return false;
         }
 
@@ -525,7 +559,8 @@ class StreamWrapper {
         
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
-        if ($real_physical === false || $real_root === false || strpos($real_physical, $real_root) !== 0) {
+        
+        if ($real_physical === false || $real_root === false || (!str_starts_with($real_physical, $real_root . '/') && $real_physical !== $real_root)) {
             return false;
         }
         
