@@ -5,7 +5,7 @@ namespace VGT\Bridge\Core;
 
 /**
  * VGT Dependency Injection Container
- * STATUS: DIAMANT VGT SUPREME (Zero-Globals, Memory Optimized, Type-Safe, POI-Secured)
+ * STATUS: DIAMANT VGT SUPREME (Zero-Globals, Memory Optimized, Type-Safe, Immutable, POI-Secured)
  */
 final class Container {
     
@@ -22,10 +22,20 @@ final class Container {
     private function __clone() {}
     
     /**
-     * Verhindert PHP Object Injection (POI) Vektoren via unserialize()
+     * [ DIAMANT VGT FIX: POI IMMUNITY ]
+     * Verhindert PHP Object Injection (POI) Vektoren via unserialize() für PHP < 7.4
      * @throws \BadMethodCallException
      */
     public function __wakeup(): void {
+        throw new \BadMethodCallException('VGT Security: Deserialization of DI Container is strictly forbidden.');
+    }
+
+    /**
+     * [ DIAMANT VGT FIX: POI IMMUNITY ]
+     * Verhindert PHP Object Injection (POI) Vektoren via unserialize() für PHP >= 7.4
+     * @throws \BadMethodCallException
+     */
+    public function __unserialize(array $data): void {
         throw new \BadMethodCallException('VGT Security: Deserialization of DI Container is strictly forbidden.');
     }
 
@@ -34,6 +44,12 @@ final class Container {
     }
 
     public function set(string $id, callable|object $concrete): void {
+        // [ DIAMANT VGT FIX: ANTI-SERVICE-HIJACKING (IMMUTABILITY) ]
+        // Verhindert, dass Kern-Komponenten zur Laufzeit durch bösartige Payloads überschrieben werden.
+        if (isset($this->services[$id]) || isset($this->factories[$id])) {
+            throw new \RuntimeException(sprintf('VGT Security: Service hijacking attempt detected. Service "%s" is already registered and immutable.', $id));
+        }
+
         if (is_callable($concrete)) {
             $this->factories[$id] = $concrete;
         } else {
