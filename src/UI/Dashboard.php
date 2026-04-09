@@ -10,6 +10,7 @@ use VGT\Omega\System\VaultManager;
  * Kombiniert Neo-Brutalism mit Glassmorphism.
  * VGT FIX: Synchronisiert die Ansicht zwingend mit dem In-Memory-State des RAMs.
  * VGT FIX: State-Feedback (Toasts), Capability Guards & Responsive Matrix integriert.
+ * VGT UPGRADE: Zero-Downtime Artifact Rotation & Metadata Naming.
  */
 final class Dashboard {
     
@@ -51,6 +52,8 @@ final class Dashboard {
         $alert_html = '';
         if ($msg === 'installed') {
             $alert_html = '<div class="vgt-alert vgt-alert-success">SYSTEM UPDATE: Artifact successfully deployed to Vault.</div>';
+        } elseif ($msg === 'rotated') {
+            $alert_html = '<div class="vgt-alert vgt-alert-success" style="border-color: #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.1);">SYSTEM UPDATE: Artifact successfully ROTATED (Zero-Downtime Swap).</div>';
         } elseif ($msg === 'deleted') {
             $alert_html = '<div class="vgt-alert vgt-alert-danger">SYSTEM UPDATE: Artifact permanently obliterated from Storage.</div>';
         }
@@ -102,7 +105,7 @@ final class Dashboard {
             .vgt-metric-val { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 0.5rem; }
             .vgt-metric-label { font-size: 0.8rem; color: var(--v-sub); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
 
-            .vgt-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2.5rem; }
+            .vgt-grid { display: grid; grid-template-columns: 400px 1fr; gap: 2.5rem; }
             @media (max-width: 1024px) { .vgt-grid { grid-template-columns: 1fr; } }
             
             .vgt-panel { background: var(--v-panel); backdrop-filter: blur(12px); border: 1px solid var(--v-border); border-radius: 10px; overflow: hidden; height: fit-content; }
@@ -113,6 +116,8 @@ final class Dashboard {
             .vgt-label { display: block; color: var(--v-sub); font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem; }
             .vgt-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--v-border); color: #fff; padding: 0.8rem 1rem; font-family: monospace; border-radius: 6px; box-sizing: border-box; transition: all 0.2s; }
             .vgt-input:focus { border-color: var(--v-accent); outline: none; box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+            select.vgt-input { appearance: auto; cursor: pointer; color: #e4e4e7; }
+            select.vgt-input option { background: #18181b; color: #e4e4e7; }
             
             .vgt-btn { display: inline-flex; justify-content: center; align-items: center; width: 100%; padding: 1rem; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
             .vgt-btn-primary { background: var(--v-accent); color: #000; box-shadow: 0 4px 14px 0 rgba(16,185,129,0.39); }
@@ -122,7 +127,8 @@ final class Dashboard {
             .vgt-artifact-item { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; flex-wrap: wrap; gap: 1rem; }
             .vgt-artifact-item:last-child { border-bottom: none; }
             .vgt-artifact-item:hover { background: rgba(255,255,255,0.02); }
-            .vgt-artifact-id { color: #fff; font-family: monospace; font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+            .vgt-artifact-name { color: #fff; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+            .vgt-artifact-id { color: var(--v-sub); font-family: monospace; font-size: 0.8rem; margin-bottom: 8px; }
             
             .vgt-status-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.05); color: var(--v-sub); }
             .vgt-status-badge.active { background: rgba(16,185,129,0.1); color: var(--v-accent); }
@@ -183,7 +189,7 @@ final class Dashboard {
                         <!-- DEPLOYMENT WIDGET -->
                         <div>
                             <div class="vgt-panel">
-                                <div class="vgt-panel-head">Deploy Artifact</div>
+                                <div class="vgt-panel-head">Deploy / Rotate Artifact</div>
                                 <div class="vgt-panel-body">
                                     <form action="<?php echo \esc_url(\admin_url('admin-post.php')); ?>" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="action" value="vgt_install_artifact">
@@ -191,13 +197,36 @@ final class Dashboard {
                                         
                                         <div class="vgt-form-group">
                                             <label class="vgt-label">Artifact Package (.zip)</label>
-                                            <input type="file" name="artifact" accept=".zip" required class="vgt-input" style="padding: 10px;">
+                                            <input type="file" name="artifact" accept=".zip" required class="vgt-input" style="padding: 10px; font-family: inherit;">
                                         </div>
+                                        
                                         <div class="vgt-form-group">
                                             <label class="vgt-label">Decryption Key (64-char HEX)</label>
-                                            <input type="text" name="license_key" placeholder="Enter hex key..." class="vgt-input" autocomplete="off" spellcheck="false">
+                                            <input type="text" name="license_key" placeholder="Enter master hex key..." class="vgt-input" autocomplete="off" spellcheck="false" required>
                                         </div>
-                                        <button class="vgt-btn vgt-btn-primary">Initialize Deployment</button>
+
+                                        <hr style="border:0; border-top:1px solid rgba(255,255,255,0.05); margin: 25px 0;">
+
+                                        <div class="vgt-form-group">
+                                            <label class="vgt-label">Artifact Name (Optional)</label>
+                                            <input type="text" name="artifact_name" placeholder="e.g., Aegis Core Firewall" class="vgt-input" style="font-family: inherit;">
+                                        </div>
+
+                                        <div class="vgt-form-group">
+                                            <label class="vgt-label">Target for Rotation (Zero-Downtime Update)</label>
+                                            <select name="rotate_id" class="vgt-input">
+                                                <option value="">-- Deploy as New Artifact --</option>
+                                                <?php foreach($artifacts as $id => $val): 
+                                                    $meta = VaultManager::getArtifactMeta((string)$id);
+                                                ?>
+                                                    <option value="<?php echo esc_attr($id); ?>">
+                                                        🔄 UPDATE: <?php echo esc_html($meta['name']); ?> (<?php echo esc_html(substr((string)$id, 0, 8)); ?>...)
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+
+                                        <button class="vgt-btn vgt-btn-primary" style="margin-top: 10px;">Initialize Deployment</button>
                                     </form>
                                 </div>
                             </div>
@@ -205,7 +234,7 @@ final class Dashboard {
 
                         <!-- VAULT WIDGET -->
                         <div class="vgt-panel">
-                            <div class="vgt-panel-head">Artifact Vault</div>
+                            <div class="vgt-panel-head">Artifact Vault Registry</div>
                             <?php if(empty($artifacts)): ?>
                                 <div style="padding: 5rem 2rem; text-align:center; color:var(--v-sub);">
                                     <div style="font-size:3rem; margin-bottom:1rem; opacity:0.5;">⛑</div>
@@ -216,14 +245,25 @@ final class Dashboard {
                                 <ul class="vgt-artifact-list">
                                 <?php foreach($artifacts as $id => $val): 
                                     $is_unlocked = VaultManager::isUnlocked((string)$id);
+                                    $meta = VaultManager::getArtifactMeta((string)$id);
                                 ?>
                                     <li class="vgt-artifact-item">
                                         <div>
-                                            <div class="vgt-artifact-id"><?php echo esc_html($id); ?></div>
+                                            <div class="vgt-artifact-name">
+                                                <?php echo esc_html($meta['name']); ?>
+                                            </div>
+                                            <div class="vgt-artifact-id">ID: <?php echo esc_html($id); ?></div>
+                                            
                                             <div class="vgt-status-badge <?php echo $is_unlocked ? 'active' : ''; ?>">
                                                 <span class="dot <?php echo $is_unlocked ? 'active' : 'inactive'; ?>"></span>
                                                 <?php echo $is_unlocked ? 'SECURE RUNTIME ACTIVE' : 'LOCKED (MISSING KEY)'; ?>
                                             </div>
+                                            
+                                            <?php if(!empty($meta['updated'])): ?>
+                                                <div style="font-size: 0.7rem; color: var(--v-sub); margin-top: 8px;">
+                                                    Last Rotated: <?php echo date('Y-m-d H:i:s', $meta['updated']); ?>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                         <div>
                                             <form action="<?php echo \esc_url(\admin_url('admin-post.php')); ?>" method="post" onsubmit="return confirm('DANGER: Obliterate Artifact? This action is irreversible and destroys the AES Bindings.');">
