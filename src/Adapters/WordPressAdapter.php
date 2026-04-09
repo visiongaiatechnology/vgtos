@@ -9,6 +9,8 @@ use VGT\Omega\Contracts\EnvironmentInterface;
 /**
  * PLATIN STATUS: Hardened WordPress Adapter
  * Implementiert Menu-Hijacking für das VGT OS Dashboard + Deep Security Sanitization.
+ * KERNEL UPGRADES:
+ * - Fatal Error Elimination in Data Unslashing (Zero-Day Fix).
  */
 final class WordPressAdapter implements BridgeInterface {
     
@@ -56,25 +58,18 @@ final class WordPressAdapter implements BridgeInterface {
      * ==================================================================== */
 
     public function addMenuMain(string $p_title, string $m_title, string $cap, string $slug, callable $cb, string $icon = '', ?int $pos = null): string|false { 
-        // VGT KERNEL FIX: Slug-Sanitization. 
-        // Verhindert, dass WP den Slug als Datei interpretiert und in die file_exists() Falle tappt.
         $safe_slug = str_replace(['vgt://', '.php', '/'], ['vgt-', '-php', '-'], $slug);
 
-        // VGT UI Sandbox Injection
         $sandboxed_cb = function() use ($cb) {
             echo '<div class="vgt-artifact-sandbox" style="margin-top:20px; background: #09090b; border: 1px solid #27272a; border-radius: 8px; padding: 2.5rem; color: #e4e4e7; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);">';
             $cb();
             echo '</div>';
         };
-        // Zwinge das Plugin als Sub-Menü unter die zentrale VGT Console
         return \add_submenu_page('vgt-console', $p_title, $m_title, $cap, $safe_slug, $sandboxed_cb); 
     }
 
     public function addMenuSub(string $p_slug, string $p_title, string $m_title, string $cap, string $slug, callable $cb): string|false { 
-        // VGT KERNEL FIX: Slug-Sanitization auch für Sub-Menüs
         $safe_slug = str_replace(['vgt://', '.php', '/'], ['vgt-', '-php', '-'], $slug);
-        
-        // Redirect: Jedes Sub-Menü eines Artifacts wird ebenfalls unter VGT Console gemountet
         return \add_submenu_page('vgt-console', $p_title, $m_title, $cap, $safe_slug, $cb); 
     }
     
@@ -124,7 +119,10 @@ final class WordPressAdapter implements BridgeInterface {
     private function fetchUnslashed(string $key, string $method): mixed {
         $pool = ($method === 'POST') ? $_POST : $_GET;
         if (!isset($pool[$key])) return null;
-        return function_exists('wp_unslash') ? \wp_unslash($pool[$key]) : \stripslashes_deep($pool[$pool]);
+        
+        // [ DIAMANT VGT FIX: FATAL ERROR ELIMINATION ]
+        // Der vorherige Code stripslashes_deep($pool[$pool]) verursachte einen Fatal Error (Array to string conversion / Invalid Offset).
+        return function_exists('wp_unslash') ? \wp_unslash($pool[$key]) : \stripslashes_deep($pool[$key]);
     }
 
     private function stripControlChars(string $string): string {
