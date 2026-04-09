@@ -6,7 +6,10 @@ namespace VGT\Omega\System;
 /**
  * STATUS: DIAMANT VGT SUPREME
  * Verwaltet den physikalischen Speicher, HKDF-Verschlüsselung, AAD-Binding und Stream-Mounting.
- * VGT FIX: Zero-Trust Path Resolution, Zip Slip Prevention & Memory GC Optimization.
+ * KERNEL UPGRADES:
+ * - Sovereign Cryptographic Salt (Isoliert von WP AUTH_KEY Rotation).
+ * - Advanced Zip Slip Guard (Windows Absolute Path Protection).
+ * - Zero-Downtime Artifact Rotation & Naming Registry.
  */
 final class VaultManager {
     private static array $registry = [];
@@ -53,6 +56,42 @@ final class VaultManager {
     }
 
     /* ====================================================================
+     * METADATA REGISTRY (NAMING & ROTATION TRACKING)
+     * ==================================================================== */
+
+    public static function getArtifactMeta(string $id): array {
+        $meta = \get_option('vgt_vault_meta', []);
+        if (isset($meta[$id])) {
+            return $meta[$id];
+        }
+        return [
+            'name' => 'VGT Artifact: ' . strtoupper(substr($id, 0, 8)),
+            'updated' => 0
+        ];
+    }
+
+    private static function updateArtifactMeta(string $id, string $custom_name): void {
+        $meta = \get_option('vgt_vault_meta', []);
+        
+        if (!empty($custom_name)) {
+            $meta[$id]['name'] = $custom_name;
+        } elseif (empty($meta[$id]['name'])) {
+            $meta[$id]['name'] = 'VGT Artifact: ' . strtoupper(substr($id, 0, 8));
+        }
+        
+        $meta[$id]['updated'] = time();
+        \update_option('vgt_vault_meta', $meta);
+    }
+
+    private static function deleteArtifactMeta(string $id): void {
+        $meta = \get_option('vgt_vault_meta', []);
+        if (isset($meta[$id])) {
+            unset($meta[$id]);
+            \update_option('vgt_vault_meta', $meta);
+        }
+    }
+
+    /* ====================================================================
      * KRYPTOGRAFIE KERNEL & STATE MANAGEMENT
      * ==================================================================== */
 
@@ -76,8 +115,16 @@ final class VaultManager {
     }
 
     private static function getMasterKey(): string {
-        $salt = defined('AUTH_KEY') ? AUTH_KEY : 'vgt_omega_fallback_salt';
-        return hash_hkdf('sha256', $salt, 32, 'vgt_omega_master_key_v1');
+        $vgt_salt = \get_option('vgt_vault_master_salt');
+        if (empty($vgt_salt)) {
+            try {
+                $vgt_salt = bin2hex(random_bytes(32));
+            } catch (\Exception $e) {
+                $vgt_salt = hash('sha512', uniqid((string)mt_rand(), true));
+            }
+            \update_option('vgt_vault_master_salt', $vgt_salt);
+        }
+        return hash_hkdf('sha256', $vgt_salt, 32, 'vgt_omega_master_key_v1');
     }
 
     private static function loadKeys(): void {
@@ -105,7 +152,6 @@ final class VaultManager {
                         self::$keys[$id] = $key;
                     }
                 }
-                // VGT GC: RAM Freigabe
                 unset($raw, $iv, $tag, $ciphertext, $key);
             }
         }
@@ -157,7 +203,7 @@ final class VaultManager {
             if (!$raw) continue;
 
             $manifest = json_decode($raw, true);
-            unset($raw); // Memory Freigabe
+            unset($raw); 
 
             if (!$manifest) continue;
 
@@ -187,12 +233,12 @@ final class VaultManager {
         $ciphertext = substr($content, 28);
         
         $decrypted = openssl_decrypt($ciphertext, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
-        unset($content, $ciphertext, $iv, $tag); // VGT Memory Cleanup O(1)
+        unset($content, $ciphertext, $iv, $tag); 
 
         if ($decrypted === false) return false;
         
         $result = gzdecode($decrypted);
-        unset($decrypted); // VGT Memory Cleanup
+        unset($decrypted); 
         
         return $result;
     }
@@ -256,7 +302,7 @@ final class VaultManager {
     }
 
     /* ====================================================================
-     * INSTALLER LOGIC
+     * INSTALLER LOGIC (ZERO-DOWNTIME ROTATION ENABLED)
      * ==================================================================== */
 
     public static function getRegistry(string $id): ?array { return self::$registry[$id] ?? null; }
@@ -285,6 +331,10 @@ final class VaultManager {
         $file = $_FILES['artifact'];
         $raw_key = trim(\sanitize_text_field($_POST['license_key'] ?? $_POST['master_key'] ?? $_POST['key'] ?? ''));
         
+        // Neu: Rotations-ID und Custom Name
+        $rotate_id = \sanitize_text_field($_POST['rotate_id'] ?? '');
+        $custom_name = \sanitize_text_field($_POST['artifact_name'] ?? '');
+        
         if (empty($file['tmp_name'])) \wp_die('VGT SECURITY: Missing File Data');
         if (empty($raw_key)) \wp_die('VGT SECURITY: CRITICAL ABORT - Master Key was not transmitted correctly.');
         
@@ -293,19 +343,34 @@ final class VaultManager {
         
         if ($zip->open($file['tmp_name']) === TRUE) {
             
-            // [ DIAMANT VGT FIX: ZIP SLIP GUARD ]
-            // Verhindert das Extrahieren von Dateien in übergeordnete Verzeichnisse (z.B. ../../../../wp-config.php)
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $info = $zip->statIndex($i);
-                if (str_contains($info['name'], '../') || str_starts_with($info['name'], '/')) {
+                $fname = $info['name'];
+                if (str_contains($fname, '../') || str_starts_with($fname, '/') || preg_match('/^[a-zA-Z]:\\\\/', $fname)) {
                     $zip->close();
                     \wp_die('VGT SECURITY: CRITICAL - Zip Slip Attack / Path Traversal detected in Archive. Installation Aborted.');
                 }
             }
 
-            $art_id = uniqid('vgt_'); 
-            $target = $vault_dir . '/' . $art_id;
-            \wp_mkdir_p($target);
+            // ATOMIC ROTATION LOGIC
+            if (!empty($rotate_id)) {
+                $target = $vault_dir . '/' . $rotate_id;
+                if (!is_dir($target)) {
+                    $zip->close();
+                    \wp_die('VGT SECURITY: Invalid Rotation Target. The specified Artifact ID does not exist.');
+                }
+                $art_id = $rotate_id;
+                
+                // Leere das Verzeichnis in Millisekunden, bevor das neue Zip extrahiert wird.
+                // Verhindert, dass alte tote Dateien liegen bleiben.
+                self::emptyDir($target);
+                $msg_status = 'rotated';
+            } else {
+                $art_id = uniqid('vgt_'); 
+                $target = $vault_dir . '/' . $art_id;
+                \wp_mkdir_p($target);
+                $msg_status = 'installed';
+            }
             
             if (!$zip->extractTo($target)) {
                 \wp_die('VGT SECURITY: Artifact Extraction Failed. Path Permissions Issue.');
@@ -321,8 +386,10 @@ final class VaultManager {
                 self::rrmdir($target);
                 \wp_die('VGT SECURITY: Invalid Master Key format. Must be exactly 64 HEX characters.');
             }
+
+            self::updateArtifactMeta($art_id, $custom_name);
             
-            \wp_redirect(\admin_url('admin.php?page=vgt-console&msg=installed'));
+            \wp_redirect(\admin_url('admin.php?page=vgt-console&msg=' . $msg_status));
             exit;
         }
         \wp_die('VGT SECURITY: Invalid Zip File Format');
@@ -332,8 +399,6 @@ final class VaultManager {
         \check_admin_referer('vgt_action');
         if (!\current_user_can('activate_plugins')) \wp_die('Access Denied');
         
-        // [ DIAMANT VGT FIX: ABSOLUTE DIRECTORY TRAVERSAL PREVENTION ]
-        // Erzwingt, dass die ID NUR der Name des Ordners ist, ohne Pfadbestandteile.
         $id = basename(\sanitize_text_field($_POST['artifact_id']));
         
         if (empty($id) || $id === '.' || $id === '..') \wp_die('VGT SECURITY: Invalid Artifact ID');
@@ -347,11 +412,19 @@ final class VaultManager {
             \update_option('vgt_vault_keys', $keys);
         }
 
+        self::deleteArtifactMeta($id);
+
         \wp_redirect(\admin_url('admin.php?page=vgt-console&msg=deleted'));
         exit;
     }
 
     private static function rrmdir(string $dir): void { 
+        if (!is_dir($dir)) return;
+        self::emptyDir($dir);
+        rmdir($dir); 
+    }
+
+    private static function emptyDir(string $dir): void {
         if (!is_dir($dir)) return;
         foreach (scandir($dir) as $obj) { 
             if ($obj != "." && $obj != "..") { 
@@ -359,7 +432,6 @@ final class VaultManager {
                 is_dir($path) && !is_link($path) ? self::rrmdir($path) : unlink($path); 
             } 
         }
-        rmdir($dir); 
     }
 
     /* ====================================================================
@@ -373,22 +445,23 @@ final class VaultManager {
             $virtual_file = "vgt-protected/{$id}.php";
             
             $is_unlocked = self::isUnlocked($id);
+            $meta = self::getArtifactMeta((string)$id);
             
             $status_html = $is_unlocked 
                 ? '<span style="color:#10b981; font-weight:800; letter-spacing:0.5px;">● SECURE RUNTIME ACTIVE</span>' 
                 : '<span style="color:#ef4444; font-weight:800; letter-spacing:0.5px;">● LOCKED (MISSING KEY)</span>';
 
             $plugins[$virtual_file] = [
-                'Name'        => "VGT Artifact: " . strtoupper(substr($id, 0, 8)),
+                'Name'        => "🛡️ " . esc_html($meta['name']),
                 'PluginURI'   => \admin_url('admin.php?page=vgt-console'),
                 'Version'     => 'Secure Stream',
-                'Description' => "🔒 Encrypted Payload running directly in VGT Memory Stream.<br>{$status_html}",
+                'Description' => "🔒 Encrypted Payload running directly in VGT Memory Stream. (ID: {$id})<br>{$status_html}",
                 'Author'      => 'VGT Omega System',
                 'AuthorURI'   => 'https://visiongaiatechnology.de',
                 'TextDomain'  => '',
                 'DomainPath'  => '',
                 'Network'     => false,
-                'Title'       => "VGT Artifact: " . strtoupper(substr($id, 0, 8)),
+                'Title'       => "🛡️ " . esc_html($meta['name']),
                 'AuthorName'  => 'VGT Omega System',
             ];
         }
@@ -458,9 +531,6 @@ class StreamWrapper {
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
         
-        // [ DIAMANT VGT FIX: LFI BYPASS VERHINDERUNG ]
-        // Nur Prefix-String-Check reicht nicht. "vgt-vault/plugin1" vs "vgt-vault/plugin1-hack"
-        // Muss zwingend mit DIRECTORY_SEPARATOR enden oder exakt matchen!
         if ($real_physical === false || $real_root === false) {
             return false;
         }
@@ -479,7 +549,7 @@ class StreamWrapper {
             $decrypted = VaultManager::decryptFile($physical, $reg['key'], true);
             if ($decrypted === false) return false;
             $this->buffer = $decrypted;
-            unset($decrypted); // RAM O(1) Freigabe
+            unset($decrypted);
         } else {
             $content = file_get_contents($physical);
             if ($content === false) return false;
