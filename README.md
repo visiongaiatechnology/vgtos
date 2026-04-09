@@ -63,6 +63,10 @@ By utilizing the VGT Universal Bridge, we create a clean architectural separatio
 
 ---
 
+<img width="1747" height="835" alt="{FD15576F-9A80-41D2-B1A4-F9C43149BB2E}" src="https://github.com/user-attachments/assets/a6217706-faa2-4381-96c8-638ae1d43b54" />
+
+
+
 ## 🔑 Before You Start — The Encryptor
 
 VGT OS is the **runtime**. It loads, decrypts, and executes encrypted artifacts in RAM.
