@@ -10,6 +10,7 @@ namespace VGT\Omega\System;
  * - Sovereign Cryptographic Salt (Isoliert von WP AUTH_KEY Rotation).
  * - Advanced Zip Slip Guard (Windows Absolute Path Protection).
  * - Zero-Downtime Artifact Rotation & Naming Registry.
+ * - Zero-I/O Virtual File System (SSD-Bypass für extreme RPS).
  */
 final class VaultManager {
     private static array $registry = [];
@@ -331,7 +332,6 @@ final class VaultManager {
         $file = $_FILES['artifact'];
         $raw_key = trim(\sanitize_text_field($_POST['license_key'] ?? $_POST['master_key'] ?? $_POST['key'] ?? ''));
         
-        // Neu: Rotations-ID und Custom Name
         $rotate_id = \sanitize_text_field($_POST['rotate_id'] ?? '');
         $custom_name = \sanitize_text_field($_POST['artifact_name'] ?? '');
         
@@ -352,7 +352,6 @@ final class VaultManager {
                 }
             }
 
-            // ATOMIC ROTATION LOGIC
             if (!empty($rotate_id)) {
                 $target = $vault_dir . '/' . $rotate_id;
                 if (!is_dir($target)) {
@@ -360,9 +359,6 @@ final class VaultManager {
                     \wp_die('VGT SECURITY: Invalid Rotation Target. The specified Artifact ID does not exist.');
                 }
                 $art_id = $rotate_id;
-                
-                // Leere das Verzeichnis in Millisekunden, bevor das neue Zip extrahiert wird.
-                // Verhindert, dass alte tote Dateien liegen bleiben.
                 self::emptyDir($target);
                 $msg_status = 'rotated';
             } else {
@@ -376,6 +372,10 @@ final class VaultManager {
                 \wp_die('VGT SECURITY: Artifact Extraction Failed. Path Permissions Issue.');
             }
             $zip->close();
+            
+            if (function_exists('apcu_clear_cache')) {
+                apcu_clear_cache();
+            }
             
             @file_put_contents($target . '/index.php', "<?php header('HTTP/1.1 403 Forbidden'); exit('VGT OMEGA BLOCK');");
             
@@ -413,6 +413,10 @@ final class VaultManager {
         }
 
         self::deleteArtifactMeta($id);
+        
+        if (function_exists('apcu_clear_cache')) {
+            apcu_clear_cache();
+        }
 
         \wp_redirect(\admin_url('admin.php?page=vgt-console&msg=deleted'));
         exit;
@@ -506,10 +510,14 @@ class StreamWrapper {
         $id = $parts[0];
         $sub = isset($parts[1]) ? '/' . $parts[1] : '/';
         
+        // Strict Virtual Path Resolution (Prevents Traversal)
         $stack = [];
         foreach (explode('/', $sub) as $seg) {
-            if ($seg == '..') array_pop($stack);
-            elseif ($seg != '.' && $seg != '') array_push($stack, $seg);
+            if ($seg == '..') {
+                if (!empty($stack)) array_pop($stack);
+            } elseif ($seg != '.' && $seg != '') {
+                array_push($stack, $seg);
+            }
         }
         return ['id' => $id, 'path' => '/' . implode('/', $stack)];
     }
@@ -524,6 +532,23 @@ class StreamWrapper {
         $reg = VaultManager::getRegistry($this->artifact_id);
         if (!$reg) return false;
 
+        // [ DIAMANT VGT FIX: ZERO-I/O RAM BRIDGE ]
+        // Wir prüfen APCu BEVOR wir die physische Disk via file_exists/realpath konsultieren.
+        // Das eliminiert IOPS-Flaschenhälse bei massiven include_once() Aufrufen.
+        $use_apcu = function_exists('apcu_fetch');
+        $cache_key = 'vgt_str_v2_' . md5($this->artifact_id . '|' . $this->virtual_path . '|' . $reg['key']);
+
+        if ($use_apcu) {
+            $cached_buffer = apcu_fetch($cache_key);
+            if ($cached_buffer !== false) {
+                $this->buffer = $cached_buffer;
+                $this->position = 0;
+                $opened_path = $path;
+                return true;
+            }
+        }
+
+        // --- PHYSICAL DISK FALLBACK ---
         $physical = wp_normalize_path($reg['root'] . $this->virtual_path);
         
         if (!file_exists($physical)) return false;
@@ -531,16 +556,12 @@ class StreamWrapper {
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
         
-        if ($real_physical === false || $real_root === false) {
-            return false;
-        }
+        if ($real_physical === false || $real_root === false) return false;
         
         $is_inside = str_starts_with($real_physical, $real_root . '/');
         $is_root   = ($real_physical === $real_root);
         
-        if (!$is_inside && !$is_root) {
-            return false;
-        }
+        if (!$is_inside && !$is_root) return false;
 
         $clean_lookup = ltrim($this->virtual_path, '/'); 
         $type = $reg['map'][$clean_lookup] ?? ($reg['map'][$this->virtual_path] ?? 'raw');
@@ -557,6 +578,10 @@ class StreamWrapper {
             unset($content);
         }
         
+        if ($use_apcu) {
+            apcu_store($cache_key, $this->buffer, 3600);
+        }
+        
         $this->position = 0;
         $opened_path = $path;
         return true;
@@ -569,7 +594,13 @@ class StreamWrapper {
     }
 
     public function stream_eof(): bool { return $this->position >= strlen($this->buffer); }
-    public function stream_stat(): array|false { return $this->getStatArray(strlen($this->buffer)); }
+    
+    // [ DIAMANT VGT FIX: ZERO-I/O STAT BRIDGE ]
+    // PHP's include_once ruft zwingend stream_stat auf. Liefern wir den Cache.
+    public function stream_stat(): array|false { 
+        return $this->getStatArray(strlen($this->buffer)); 
+    }
+    
     public function stream_set_option(int $option, int $arg1, int $arg2): bool { return true; } 
     public function stream_metadata(string $path, int $option, mixed $value): bool { return true; }
     public function stream_lock(int $operation): bool { return false; }
@@ -588,24 +619,40 @@ class StreamWrapper {
     public function stream_flush(): bool { return true; }
     public function stream_write(string $data): int { return 0; }
 
+    // [ DIAMANT VGT FIX: ZERO-I/O URL STAT BRIDGE ]
+    // PHP ruft url_stat IMMER vor dem stream_open auf. Ohne Cache haben wir hier massiven SSD-Overhead.
     public function url_stat(string $path, int $flags): array|false {
         $parsed = $this->parsePath($path);
         if (!$parsed) return false;
+        
         $reg = VaultManager::getRegistry($parsed['id']);
         if (!$reg) return false;
 
+        $use_apcu = function_exists('apcu_fetch');
+        $cache_key = 'vgt_stat_v2_' . md5($parsed['id'] . '|' . $parsed['path']);
+
+        if ($use_apcu) {
+            $cached_stat = apcu_fetch($cache_key);
+            if ($cached_stat !== false) return $cached_stat;
+        }
+
+        // --- PHYSICAL DISK FALLBACK ---
         $physical = wp_normalize_path($reg['root'] . $parsed['path']);
         if (!file_exists($physical)) return false;
 
         $real_physical = wp_normalize_path(realpath($physical));
         $real_root = wp_normalize_path(realpath($reg['root']));
         
-        if ($real_physical === false || $real_root === false || (!str_starts_with($real_physical, $real_root . '/') && $real_physical !== $real_root)) {
-            return false;
-        }
+        if ($real_physical === false || $real_root === false) return false;
+        if (!str_starts_with($real_physical, $real_root . '/') && $real_physical !== $real_root) return false;
 
-        if (is_dir($physical)) return $this->getStatArray(0, true);
-        return $this->getStatArray(1024); 
+        $stat = is_dir($physical) ? $this->getStatArray(0, true) : $this->getStatArray(1024);
+        
+        if ($use_apcu) {
+            apcu_store($cache_key, $stat, 3600);
+        }
+        
+        return $stat;
     }
 
     private function getStatArray(int $size, bool $is_dir = false): array {
