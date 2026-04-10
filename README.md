@@ -10,6 +10,13 @@
 
 > *"WordPress Hooks are APIs. APIs are interfaces. Interfaces do not trigger the GPL."*
 
+## ⚠️ DISCLAIMER: EXPERIMENTAL R&D PROJECT
+
+This project is a **Proof of Concept (PoC)** Wordpress Security Layer. It is **not** a Enterprise Plugin, and can be unsafe.
+
+**Do not use this in critical production environments.** For enterprise-grade kernel-level protection, we recommend established Solutions.
+
+
 **VGT OS** is the open-source runtime kernel that allows any PHP developer to deploy encrypted, proprietary plugins on WordPress — legally, architecturally, and permanently.
 
 Built on a legal opinion under German and European law: using `add_action()` and `add_filter()` constitutes API usage. APIs are interfaces. Interfaces do not trigger the GPL copyleft clause. **Your business logic is yours.**
