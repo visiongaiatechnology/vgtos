@@ -25,7 +25,7 @@ we recommend established and officially certified solutions.
 Found a vulnerability or have an improvement? **Open an issue or contact us.**
 
 
-**VGT OS** is the open-source runtime kernel that allows any PHP developer to deploy encrypted, proprietary plugins on WordPress — legally, architecturally, and permanently.
+## **VGT OS** is the open-source runtime kernel that allows any PHP developer to deploy encrypted, proprietary plugins on WordPress — legally, architecturally, and permanently.
 
 Built on a legal opinion under German and European law: using `add_action()` and `add_filter()` constitutes API usage. APIs are interfaces. Interfaces do not trigger the GPL copyleft clause. **Your business logic is yours.**
 
