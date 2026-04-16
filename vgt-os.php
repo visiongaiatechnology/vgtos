@@ -3,7 +3,7 @@
  * Plugin Name: VGT OMEGA SYSTEM
  * Plugin URI: https://visiongaiatechnology.de
  * Description: VGT Universal Bridge & Encrypted Loader Fusion. Platin Status.
- * Version: 4.0.0
+ * Version: 4.1.0
  * Author: VisionGaia Technology
  # LICENSE: AGPLv3 (OPEN SOURCE) - GLOBAL PROLIFERATION PROTOCOL
 # ==============================================================================
