@@ -7,8 +7,9 @@ namespace VGT\Omega\System;
  * STATUS: DIAMANT VGT SUPREME
  * Verwaltet den physikalischen Speicher, HKDF-Verschlüsselung, AAD-Binding und Stream-Mounting.
  * KERNEL UPGRADES:
+ * - OMEGA PROTOCOL: Hardware-Node-Locked Encryption.
+ * - One-Time Cloud Key Activation (Cloud-Token wird nach Deployment vaporisiert).
  * - Sovereign Cryptographic Salt (Isoliert von WP AUTH_KEY Rotation).
- * - Advanced Zip Slip Guard (Windows Absolute Path Protection).
  * - Zero-Downtime Artifact Rotation & Naming Registry.
  * - Zero-I/O Virtual File System (SSD-Bypass für extreme RPS).
  */
@@ -32,7 +33,7 @@ final class VaultManager {
         self::$booted = true;
 
         self::secureVault();
-        self::loadKeys();
+        self::loadHardwareKeys();
         self::mountArtifacts();
         
         \add_filter('kses_allowed_protocols', function(array $p) { $p[] = 'vgt'; return $p; });
@@ -93,7 +94,7 @@ final class VaultManager {
     }
 
     /* ====================================================================
-     * KRYPTOGRAFIE KERNEL & STATE MANAGEMENT
+     * KRYPTOGRAFIE KERNEL: HARDWARE-LOCKED ENCRYPTION
      * ==================================================================== */
 
     public static function isUnlocked(string $id): bool {
@@ -115,67 +116,91 @@ final class VaultManager {
         }
     }
 
-    private static function getMasterKey(): string {
-        $vgt_salt = \get_option('vgt_vault_master_salt');
-        if (empty($vgt_salt)) {
-            try {
-                $vgt_salt = bin2hex(random_bytes(32));
-            } catch (\Exception $e) {
-                $vgt_salt = hash('sha512', uniqid((string)mt_rand(), true));
-            }
-            \update_option('vgt_vault_master_salt', $vgt_salt);
-        }
-        return hash_hkdf('sha256', $vgt_salt, 32, 'vgt_omega_master_key_v1');
+    /**
+     * Destilliert die physische Systemarchitektur in einen unveränderlichen Entropie-Pool.
+     * Wenn der Server geklont wird (neue Inode/DB), zerstört sich der Schlüssel.
+     */
+    private static function generateHardwareEntropy(string $artifactId): string {
+        $components = [
+            php_uname('s'), // OS Kernel
+            php_uname('m'), // CPU Architecture
+            @fileinode(ABSPATH) ?: 'hw_inode_fallback', // Root Filesystem Inode
+            defined('DB_NAME') ? DB_NAME : 'hw_db_fallback', // Environment Binding
+            defined('DB_HOST') ? DB_HOST : 'hw_host_fallback'
+        ];
+        
+        $rawEntropy = hash('sha384', implode('|', $components));
+        
+        // HKDF zur Ableitung eines perfekten AES-256 Schlüssels
+        return hash_hkdf('sha256', $rawEntropy, 32, 'vgt_omega_hw_bind_' . $artifactId);
     }
 
-    private static function loadKeys(): void {
+    /**
+     * Lädt keine Keys mehr aus der Datenbank. Die Keys werden in Echtzeit
+     * aus der Hardware-Realität des Servers destilliert.
+     */
+    private static function loadHardwareKeys(): void {
         $stored = \get_option('vgt_vault_keys', []);
-        $master_key = self::getMasterKey();
 
-        foreach ($stored as $id => $enc_blob) {
-            $raw = base64_decode($enc_blob);
-            $raw_len = function_exists('mb_strlen') ? mb_strlen($raw, '8bit') : strlen($raw);
-            
-            if ($raw_len > 28) {
-                $iv = substr($raw, 0, 12);
-                $tag = substr($raw, 12, 16);
-                $ciphertext = substr($raw, 28);
-                $aad = "vgt_bind_" . $id;
-                
-                $key = openssl_decrypt($ciphertext, 'aes-256-gcm', $master_key, OPENSSL_RAW_DATA, $iv, $tag, $aad);
-                
-                if ($key !== false) {
-                    $key_len = function_exists('mb_strlen') ? mb_strlen($key, '8bit') : strlen($key);
-                    
-                    if ($key_len === 64 && ctype_xdigit($key)) {
-                        self::$keys[$id] = hex2bin($key);
-                    } elseif ($key_len === 32) {
-                        self::$keys[$id] = $key;
-                    }
-                }
-                unset($raw, $iv, $tag, $ciphertext, $key);
+        foreach ($stored as $id => $marker) {
+            // Nur Hardware-gelockte Artefakte werden prozessiert.
+            // Legacy-Klartext-Keys werden ignoriert und verfallen (Zero-Compromise).
+            if (str_starts_with($marker, 'HW_LOCKED_')) {
+                self::$keys[$id] = self::generateHardwareEntropy($id);
             }
         }
     }
 
-    private static function storeKey(string $id, string $raw_key): void {
-        $keys = \get_option('vgt_vault_keys', []);
-        $master_key = self::getMasterKey();
+    /**
+     * OMEGA PROTOCOL: Re-Encryption Engine
+     * Entschlüsselt das Artefakt mit dem Cloud-Token und verschlüsselt es sofort neu mit der Hardware-Entropie.
+     */
+    private static function transformArtifactToHardwareBound(string $targetDir, string $cloudKey, string $hwKey): bool {
+        $manifestPath = $targetDir . '/vgt_manifest.vgt';
+        if (!file_exists($manifestPath)) return false;
         
-        $iv = random_bytes(12);
-        $tag = ""; 
-        $aad = "vgt_bind_" . $id; 
+        // 1. Manifest mit dem Cloud-Key entschlüsseln
+        $rawManifest = self::decryptPayload($manifestPath, $cloudKey, false);
+        if (!$rawManifest) return false; 
         
-        $encrypted_key = openssl_encrypt($raw_key, 'aes-256-gcm', $master_key, OPENSSL_RAW_DATA, $iv, $tag, $aad);
+        $manifest = json_decode($rawManifest, true);
+        if (!$manifest || !isset($manifest['files'])) return false;
         
-        if ($encrypted_key !== false) {
-            $keys[$id] = base64_encode($iv . $tag . $encrypted_key);
-            \update_option('vgt_vault_keys', $keys);
+        // 2. Jede Payload-Datei chirurgisch umschreiben
+        foreach ($manifest['files'] as $relPath => $type) {
+            if ($type !== 'encrypted') continue;
+            
+            $filePath = wp_normalize_path($targetDir . '/' . ltrim($relPath, '/'));
+            if (!file_exists($filePath)) continue;
+            
+            $cleartext = self::decryptPayload($filePath, $cloudKey, true); // true for VGT_GUARD
+            if ($cleartext === false) return false; // Korruption erkannt -> Abbruch
+            
+            // Re-Encrypt mit lokalem Hardware-Key
+            $iv = random_bytes(12);
+            $tag = '';
+            $ciphertext = openssl_encrypt(gzencode($cleartext, 9), 'aes-256-gcm', $hwKey, OPENSSL_RAW_DATA, $iv, $tag);
+            
+            if ($ciphertext === false) return false;
+
+            // Auf Platte schreiben (VGT_GUARD header erhalten)
+            file_put_contents($filePath, "VGT_GUARD" . $iv . $tag . $ciphertext);
         }
+        
+        // 3. Manifest selbst re-verschlüsseln
+        $iv = random_bytes(12);
+        $tag = '';
+        $manifestCipher = openssl_encrypt(gzencode($rawManifest, 9), 'aes-256-gcm', $hwKey, OPENSSL_RAW_DATA, $iv, $tag);
+        
+        if ($manifestCipher === false) return false;
+        
+        file_put_contents($manifestPath, $iv . $tag . $manifestCipher);
+        
+        return true;
     }
 
     /* ====================================================================
-     * STREAM MOUNTING & DECRYPTION
+     * STREAM MOUNTING & DECRYPTION ENGINE
      * ==================================================================== */
 
     private static function mountArtifacts(): void {
@@ -200,7 +225,7 @@ final class VaultManager {
 
             if (!self::isUnlocked($id) || !file_exists($manifest_file)) continue;
 
-            $raw = self::decryptFile($manifest_file, self::$keys[$id], false);
+            $raw = self::decryptPayload($manifest_file, self::$keys[$id], false);
             if (!$raw) continue;
 
             $manifest = json_decode($raw, true);
@@ -214,12 +239,15 @@ final class VaultManager {
             try {
                 include_once "vgt://{$id}{$entry}";
             } catch (\Throwable $e) {
-                error_log("VGT BOOT ERROR [{$id}]: " . $e->getMessage());
+                error_log("VGT OMEGA KERNEL ERROR [{$id}]: " . $e->getMessage());
             }
         }
     }
 
-    public static function decryptFile(string $path, string $key, bool $has_header = true): string|false {
+    /**
+     * Universelle Entschlüsselungs-Routine (Raw AES-GCM Pipeline).
+     */
+    public static function decryptPayload(string $path, string $key, bool $has_header = true): string|false {
         $content = @file_get_contents($path);
         if (!$content) return false;
         
@@ -238,10 +266,10 @@ final class VaultManager {
 
         if ($decrypted === false) return false;
         
-        $result = gzdecode($decrypted);
+        $result = @gzdecode($decrypted);
         unset($decrypted); 
         
-        return $result;
+        return $result !== false ? $result : false;
     }
 
     /* ====================================================================
@@ -303,7 +331,7 @@ final class VaultManager {
     }
 
     /* ====================================================================
-     * INSTALLER LOGIC (ZERO-DOWNTIME ROTATION ENABLED)
+     * INSTALLER LOGIC (HARDWARE-BINDING INJECTION)
      * ==================================================================== */
 
     public static function getRegistry(string $id): ?array { return self::$registry[$id] ?? null; }
@@ -330,13 +358,14 @@ final class VaultManager {
         if (!\current_user_can('activate_plugins')) \wp_die('Access Denied');
         
         $file = $_FILES['artifact'];
-        $raw_key = trim(\sanitize_text_field($_POST['license_key'] ?? $_POST['master_key'] ?? $_POST['key'] ?? ''));
+        // Der hier eingegebene Key ist nun ein reines Wegwerf-Aktivierungstoken.
+        $raw_cloud_key = trim(\sanitize_text_field($_POST['license_key'] ?? $_POST['master_key'] ?? $_POST['key'] ?? ''));
         
         $rotate_id = \sanitize_text_field($_POST['rotate_id'] ?? '');
         $custom_name = \sanitize_text_field($_POST['artifact_name'] ?? '');
         
         if (empty($file['tmp_name'])) \wp_die('VGT SECURITY: Missing File Data');
-        if (empty($raw_key)) \wp_die('VGT SECURITY: CRITICAL ABORT - Master Key was not transmitted correctly.');
+        if (empty($raw_cloud_key)) \wp_die('VGT SECURITY: CRITICAL ABORT - Master Cloud Key was not transmitted.');
         
         $vault_dir = self::getBaseDir();
         $zip = new \ZipArchive;
@@ -379,13 +408,25 @@ final class VaultManager {
             
             @file_put_contents($target . '/index.php', "<?php header('HTTP/1.1 403 Forbidden'); exit('VGT OMEGA BLOCK');");
             
-            $clean_key = preg_replace('/[^a-fA-F0-9]/', '', $raw_key);
-            if (strlen($clean_key) === 64) {
-                self::storeKey($art_id, hex2bin($clean_key));
-            } else {
+            // OMEGA PROTOCOL INTERVENTION: Cloud-Key verifizieren und Artefakt auf Hardware umschreiben.
+            $clean_key = preg_replace('/[^a-fA-F0-9]/', '', $raw_cloud_key);
+            if (strlen($clean_key) !== 64) {
                 self::rrmdir($target);
-                \wp_die('VGT SECURITY: Invalid Master Key format. Must be exactly 64 HEX characters.');
+                \wp_die('VGT SECURITY: Invalid Cloud Key format. Must be exactly 64 HEX characters.');
             }
+
+            $binaryCloudKey = hex2bin($clean_key);
+            $hardwareKey = self::generateHardwareEntropy($art_id);
+
+            if (!self::transformArtifactToHardwareBound($target, $binaryCloudKey, $hardwareKey)) {
+                self::rrmdir($target);
+                \wp_die('VGT SECURITY: Cryptographic hardware-binding failed. The Cloud Key is invalid or the artifact is corrupted. Aborted.');
+            }
+
+            // Vaporisierung des Cloud-Keys in der Persistenzschicht. Wir speichern nur ein Marker-Flag.
+            $keys = \get_option('vgt_vault_keys', []);
+            $keys[$art_id] = 'HW_LOCKED_' . hash('crc32', $hardwareKey);
+            \update_option('vgt_vault_keys', $keys);
 
             self::updateArtifactMeta($art_id, $custom_name);
             
@@ -452,8 +493,8 @@ final class VaultManager {
             $meta = self::getArtifactMeta((string)$id);
             
             $status_html = $is_unlocked 
-                ? '<span style="color:#10b981; font-weight:800; letter-spacing:0.5px;">● SECURE RUNTIME ACTIVE</span>' 
-                : '<span style="color:#ef4444; font-weight:800; letter-spacing:0.5px;">● LOCKED (MISSING KEY)</span>';
+                ? '<span style="color:#10b981; font-weight:800; letter-spacing:0.5px;">● SECURE RUNTIME ACTIVE (HW-LOCKED)</span>' 
+                : '<span style="color:#ef4444; font-weight:800; letter-spacing:0.5px;">● SYSTEM FAULT (HARDWARE DRIFT OR MISSING KEY)</span>';
 
             $plugins[$virtual_file] = [
                 'Name'        => "🛡️ " . esc_html($meta['name']),
@@ -533,10 +574,8 @@ class StreamWrapper {
         if (!$reg) return false;
 
         // [ DIAMANT VGT FIX: ZERO-I/O RAM BRIDGE ]
-        // Wir prüfen APCu BEVOR wir die physische Disk via file_exists/realpath konsultieren.
-        // Das eliminiert IOPS-Flaschenhälse bei massiven include_once() Aufrufen.
         $use_apcu = function_exists('apcu_fetch');
-        $cache_key = 'vgt_str_v2_' . md5($this->artifact_id . '|' . $this->virtual_path . '|' . $reg['key']);
+        $cache_key = 'vgt_str_v3_' . md5($this->artifact_id . '|' . $this->virtual_path . '|' . $reg['key']);
 
         if ($use_apcu) {
             $cached_buffer = apcu_fetch($cache_key);
@@ -567,7 +606,7 @@ class StreamWrapper {
         $type = $reg['map'][$clean_lookup] ?? ($reg['map'][$this->virtual_path] ?? 'raw');
 
         if ($type === 'encrypted') {
-            $decrypted = VaultManager::decryptFile($physical, $reg['key'], true);
+            $decrypted = VaultManager::decryptPayload($physical, $reg['key'], true);
             if ($decrypted === false) return false;
             $this->buffer = $decrypted;
             unset($decrypted);
@@ -596,7 +635,6 @@ class StreamWrapper {
     public function stream_eof(): bool { return $this->position >= strlen($this->buffer); }
     
     // [ DIAMANT VGT FIX: ZERO-I/O STAT BRIDGE ]
-    // PHP's include_once ruft zwingend stream_stat auf. Liefern wir den Cache.
     public function stream_stat(): array|false { 
         return $this->getStatArray(strlen($this->buffer)); 
     }
@@ -620,7 +658,6 @@ class StreamWrapper {
     public function stream_write(string $data): int { return 0; }
 
     // [ DIAMANT VGT FIX: ZERO-I/O URL STAT BRIDGE ]
-    // PHP ruft url_stat IMMER vor dem stream_open auf. Ohne Cache haben wir hier massiven SSD-Overhead.
     public function url_stat(string $path, int $flags): array|false {
         $parsed = $this->parsePath($path);
         if (!$parsed) return false;
@@ -629,7 +666,7 @@ class StreamWrapper {
         if (!$reg) return false;
 
         $use_apcu = function_exists('apcu_fetch');
-        $cache_key = 'vgt_stat_v2_' . md5($parsed['id'] . '|' . $parsed['path']);
+        $cache_key = 'vgt_stat_v3_' . md5($parsed['id'] . '|' . $parsed['path']);
 
         if ($use_apcu) {
             $cached_stat = apcu_fetch($cache_key);
