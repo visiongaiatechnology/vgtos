@@ -15,9 +15,9 @@
   --vgt-font-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --vgt-bg-0: #0b1014;  --vgt-bg-1: #0e151a;
   --vgt-canvas: #121b21;  --vgt-canvas-2: #0f171c;
-  --vgt-text: #e8eef0;  --vgt-text-2: #b6c3c8;  --vgt-muted: #8e9ca3;
+  --vgt-text: #ffffff;  --vgt-text-2: #f3f7f8;  --vgt-muted: #cfdbdf;
   --vgt-accent: #3cc4b0;  --vgt-accent-strong: #2aa897;  --vgt-accent-pigment: #17544f;
-  --vgt-titanium: #a9b6bc;
+  --vgt-titanium: #dfe8eb;
   --vgt-warning: #d8a96c;  --vgt-danger: #e5857e;  --vgt-success: #5ec79d;  --vgt-focus: #8fe8db;
   --vgt-ink: #05100d;
   --vgt-stroke: rgba(167, 182, 188, 0.16);  --vgt-stroke-strong: rgba(167, 182, 188, 0.3);
@@ -40,10 +40,10 @@
   :root {
     --vgt-bg-0: oklch(0.1696 0.0115 242.53);  --vgt-bg-1: oklch(0.191 0.0147 239.61);
     --vgt-canvas: oklch(0.2162 0.0177 237.84);  --vgt-canvas-2: oklch(0.205 0.0165 238.5);
-    --vgt-text: oklch(0.9451 0.007 219.56);  --vgt-text-2: oklch(0.8087 0.016 222.72);
-    --vgt-muted: oklch(0.6839 0.019 229.14);
+    --vgt-text: oklch(0.99 0.002 220);  --vgt-text-2: oklch(0.957 0.006 220);
+    --vgt-muted: oklch(0.865 0.011 226);
     --vgt-accent: oklch(0.7433 0.1185 180.99);  --vgt-accent-strong: oklch(0.6612 0.1087 181.58);
-    --vgt-accent-pigment: oklch(0.4063 0.0613 187.21);  --vgt-titanium: oklch(0.768 0.0169 227.04);
+    --vgt-accent-pigment: oklch(0.4063 0.0613 187.21);  --vgt-titanium: oklch(0.912 0.01 227.04);
     --vgt-warning: oklch(0.7646 0.0958 72.81);  --vgt-danger: oklch(0.7181 0.1191 24.88);
     --vgt-success: oklch(0.7557 0.1163 164.8);  --vgt-focus: oklch(0.8712 0.088 183.98);
     --vgt-stroke: oklch(0.55 0.02 230 / 0.24);  --vgt-stroke-strong: oklch(0.62 0.02 230 / 0.42);
@@ -85,6 +85,14 @@
 }
 .vgt-console h1, .vgt-console h2, .vgt-console h3, .vgt-console p, .vgt-console dl,
 .vgt-console dd, .vgt-console ol, .vgt-console ul { margin: 0; }
+/* Readability directive: primary headings and copy stay pure white on every glass layer. */
+.vgt-console h1, .vgt-console h2, .vgt-console h3, .vgt-console h4 { color: var(--vgt-text); }
+.vgt-console .vgt-title,
+.vgt-console .vgt-panel__title,
+.vgt-console .vgt-empty__title,
+.vgt-console .vgt-banner__title,
+.vgt-console .vgt-row__name,
+.vgt-console .vgt-vault__count-value { color: var(--vgt-text); }
 .vgt-console code { font-family: var(--vgt-font-mono); font-size: 0.92em; color: var(--vgt-text-2); }
 .vgt-icon { width: 20px; height: 20px; flex: none; vertical-align: -0.2em; }
 
@@ -105,7 +113,7 @@
 }
 .vgt-title__codename { font-size: 0.68rem; letter-spacing: 0.22em; color: var(--vgt-titanium); text-transform: uppercase; font-weight: 500; }
 .vgt-lede { margin-top: 10px; max-width: 66ch; color: var(--vgt-text-2); font-size: 0.9375rem; line-height: 1.6; }
-.vgt-section-title { font-size: var(--vgt-text-small); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--vgt-text-2); }
+.vgt-section-title { font-size: var(--vgt-text-small); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--vgt-text); }
 
 /* ── Masthead + operating state bar ──────────────────────────────────── */
 .vgt-masthead {
@@ -184,7 +192,7 @@
 .vgt-panel__head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 24px; padding: 18px 20px; border-bottom: 1px solid var(--vgt-stroke); }
 .vgt-panel__heading { min-width: 0; }
 .vgt-panel__title { font-size: var(--vgt-text-title); font-weight: 600; letter-spacing: -0.012em; line-height: 1.25; margin-top: 4px; }
-.vgt-panel__sub { margin-top: 6px; max-width: 78ch; font-size: var(--vgt-text-caption); color: var(--vgt-muted); line-height: 1.55; }
+.vgt-panel__sub { margin-top: 6px; max-width: 78ch; font-size: var(--vgt-text-caption); color: var(--vgt-text-2); line-height: 1.55; }
 
 /* ── Operation notice ────────────────────────────────────────────────── */
 .vgt-notice { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; padding: 14px 18px; border-radius: var(--vgt-radius-panel); border: 1px solid; background: var(--vgt-canvas-2); }
@@ -192,7 +200,7 @@
 .vgt-notice--crit { border-color: rgba(229, 133, 126, 0.36); box-shadow: inset 3px 0 0 var(--vgt-danger); }
 .vgt-notice__icon { color: var(--vgt-success); padding-top: 2px; }
 .vgt-notice--crit .vgt-notice__icon { color: var(--vgt-danger); }
-.vgt-notice__title { font-size: var(--vgt-text-caption); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vgt-text-2); }
+.vgt-notice__title { font-size: var(--vgt-text-caption); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vgt-text); }
 .vgt-notice__text { margin-top: 4px; font-size: var(--vgt-text-small); color: var(--vgt-text); line-height: 1.55; }
 .vgt-notice__ref { margin-top: 6px; font-size: var(--vgt-text-caption); color: var(--vgt-muted); }
 .vgt-notice__ref code { font-family: var(--vgt-font-mono); color: var(--vgt-text-2); }

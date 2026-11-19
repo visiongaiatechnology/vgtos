@@ -26,7 +26,7 @@ final class MuKernelPayload
 {
     public const FILENAME = 'vgt-omega-kernel.php';
 
-    public const DEFAULT_VERSION = '4.2.0';
+    public const DEFAULT_VERSION = '4.2.1';
 
     private const VERSION_PATTERN = '/^[0-9]{1,3}(\.[0-9]{1,3}){1,3}(-[A-Za-z0-9.]+)?$/';
 
@@ -96,7 +96,7 @@ VGT_KERNEL;
      * Build the complete kernel file source.
      *
      * @param string $pluginFile absolute path of the main VGT Omega plugin file
-     * @param string $version    plugin version, e.g. 4.2.0
+     * @param string $version    plugin version, e.g. 4.2.1
      *
      * @throws \InvalidArgumentException when path or version are malformed
      */

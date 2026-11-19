@@ -28,7 +28,7 @@ use VGT\Omega\UI\Dashboard\Dashboard;
  */
 final class Plugin
 {
-    public const VERSION = '4.2.0';
+    public const VERSION = '4.2.1';
 
     public const CODE_NAME = 'OMEGA';
 

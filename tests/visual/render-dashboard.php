@@ -145,9 +145,9 @@ function vgt_render_preview(
         display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px;
         max-width: 1720px; margin: 0 auto 10px;
         font: 500 10.5px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace;
-        letter-spacing: 0.14em; text-transform: uppercase; color: #6f7f86;
+        letter-spacing: 0.14em; text-transform: uppercase; color: #cbd7db;
       }
-      .vgt-preview-bar b { color: #a9b6bc; font-weight: 600; }
+      .vgt-preview-bar b { color: #f1f6f7; font-weight: 600; }
     </style>
 HTML;
 

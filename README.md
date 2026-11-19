@@ -13,7 +13,7 @@
   <a href="LICENSE"><img alt="License: AGPL-3.0-or-later" src="https://img.shields.io/badge/License-AGPL--3.0--or--later-0f766e?style=for-the-badge"></a>
   <a href="https://www.php.net"><img alt="PHP 8.1+" src="https://img.shields.io/badge/PHP-8.1%2B-4f5b93?style=for-the-badge"></a>
   <a href="https://wordpress.org"><img alt="WordPress 6.0+" src="https://img.shields.io/badge/WordPress-6.0%2B-21759b?style=for-the-badge"></a>
-  <img alt="Version 4.2.0" src="https://img.shields.io/badge/Version-4.2.0-b0895b?style=for-the-badge">
+  <img alt="Version 4.2.1" src="https://img.shields.io/badge/Version-4.2.1-b0895b?style=for-the-badge">
   <a href="https://github.com/visiongaiatechnology/vgtos/actions/workflows/quality.yml"><img alt="Quality gate" src="https://github.com/visiongaiatechnology/vgtos/actions/workflows/quality.yml/badge.svg"></a>
 </p>
 
@@ -27,12 +27,25 @@
 
 ---
 
-## Latest release — v4.2.0 “Security & Integrity”
+## Latest release — v4.2.1 “Console Readability”
 
-> **This is the first release that actually delivers what the previous README claimed.**
+> **Patch release:** every primary heading and body copy in the VGT security console now renders
+> **white** (`#ffffff`) or near-white instead of grey. Grey is reserved for tiny tertiary metadata
+> only. The contrast audit was re-run against the new tokens; no runtime, crypto or security logic
+> was changed in this release.
+
+| Area | What changed in 4.2.1 |
+|---|---|
+| **Console readability** | New text scale: `--vgt-text` = `#ffffff`, `--vgt-text-2` = `#f3f7f8`, `--vgt-muted` = `#cfdbdf`; explicit white rules for `h1`–`h4`, panel/empty/banner titles, row names and counters. |
+| **Contrast evidence** | `tests/visual/audit-contrast.php` re-run: 29/29 pairs pass WCAG 2.2 AA with increased ratios; rendered previews regenerated. |
+| **Scope** | CSS tokens/typography + version identity only. The 4.2.0 security baseline (see below) is unchanged. |
+
+### 4.2.0 — Security & Integrity foundation
+
+> **This is the first release that actually delivered what the previous README claimed.**
 > The 4.1 line shipped a cleartext execution fallback, a non-secret “hardware key”, missing AAD
 > binding, an APCu plaintext cache, a broken bridge namespace and contradictory license/version
-> metadata. 4.2.0 removes those mechanisms instead of documenting around them.
+> metadata. 4.2.0 removed those mechanisms instead of documenting around them.
 
 | Area | What changed in 4.2.0 |
 |---|---|
@@ -51,9 +64,9 @@ ledger: [`docs/VERIFICATION.md`](docs/VERIFICATION.md).
 
 ### Download
 
-* **Installable plugin ZIP:** [`vgt-omega-4.2.0.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.0.zip)
+* **Installable plugin ZIP:** [`vgt-omega-4.2.1.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.1.zip)
 * **Checksums:** [`SHA256SUMS.txt`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/SHA256SUMS.txt)
-* **Source:** this repository, tag [`v4.2.0`](https://github.com/visiongaiatechnology/vgtos/releases/tag/v4.2.0)
+* **Source:** this repository, tag [`v4.2.1`](https://github.com/visiongaiatechnology/vgtos/releases/tag/v4.2.1)
 
 ---
 
@@ -212,7 +225,7 @@ No Composer packages, no JavaScript framework, no external CDN at runtime.
 
 ### Option A — Installable ZIP (recommended)
 
-1. Download [`vgt-omega-4.2.0.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.0.zip).
+1. Download [`vgt-omega-4.2.1.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.1.zip).
 2. In WordPress: **Plugins → Add New → Upload Plugin**, choose the ZIP, install, activate.
 3. Open **VGT Omega** in the admin menu.
 
@@ -340,7 +353,7 @@ deny enforcement) which this build environment cannot provide. Those items are l
 ```
 vgt-omega/
 ├── vgt-os.php                    # plugin header + bootstrap entry
-├── VERSION                       # central version source (4.2.0)
+├── VERSION                       # central version source (4.2.1)
 ├── composer.json                 # PSR-4 "VGT\\Omega\\" => src/
 ├── README.md · CHANGELOG.md · SECURITY.md · ARTIFACT_SPEC.md · legal.md
 ├── assets/sirdu.png              # Sir Quacksec, VGT mascot

@@ -1,5 +1,28 @@
 # CHANGELOG — VGT OMEGA SYSTEM
 
+## 4.2.1 — 2026-11-19 — Console Readability & Contrast Patch
+
+Patch release for the VGT security console. The rendered console previously used grey text tones
+for primary headings and most body copy, which was hard to read on the dark glass layers.
+
+### Changed
+
+* **White primary typography:** `--vgt-text` is now `#ffffff`, `--vgt-text-2` is `#f3f7f8` and
+  `--vgt-muted` is `#cfdbdf`. Explicit white rules cover `h1`–`h4`, the console title, panel /
+  empty-state / banner titles, row names and counters.
+* **Grey is tertiary only:** muted tones remain for tiny uppercase metadata and labels; descriptive
+  copy, hints and subtitles use the near-white secondary tone.
+* **Contrast evidence re-run:** `php tests/visual/audit-contrast.php` regenerated the audit with the
+  new tokens (29/29 WCAG 2.2 AA pairs pass); rendered previews regenerated with version 4.2.1.
+* **Version identity:** `VERSION`, plugin header, `Plugin::VERSION`, layer-0 kernel payload,
+  `vgt-pack --version`, README, SECURITY/VERIFICATION and tests now consistently report 4.2.1.
+
+### Unchanged
+
+* No runtime, cryptography, storage, installer or authorization logic changed in this release.
+* The 4.2.0 security controls and its internal re-audit baseline remain the security reference;
+  the 4.2.1 delta is CSS tokens/typography plus version strings.
+
 ## 4.2.0 — 2026-11-19 — Security & Integrity Release
 
 This is a full remediation release for the 4.1 audit. It changes the on-disk format, the key hierarchy and the bridge namespace; existing 4.0/4.1 **installed** artifacts are not mount-compatible and must be re-imported (their cloud packages can still be imported and are re-encrypted into the new format).

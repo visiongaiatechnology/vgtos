@@ -3,7 +3,7 @@
  * Plugin Name:       VGT Omega System
  * Plugin URI:        https://visiongaiatechnology.de
  * Description:       Sovereign encrypted artifact vault, universal host bridge and Glass 2100 security console for WordPress. Loads AES-256-GCM artifacts from RAM only.
- * Version:           4.2.0
+ * Version:           4.2.1
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            VisionGaia Technology

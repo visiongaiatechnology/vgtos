@@ -23,11 +23,11 @@ use VGT\Omega\System\Vault\VaultManager;
 /** @var TestRunner $runner */
 $projectRoot = VGT_TEST_PROJECT_ROOT;
 
-$runner->test('Source identity is unified at version 4.2.0', function () use ($runner, $projectRoot): void {
-    $runner->assertSame('4.2.0', Plugin::VERSION);
+$runner->test('Source identity is unified at version 4.2.1', function () use ($runner, $projectRoot): void {
+    $runner->assertSame('4.2.1', Plugin::VERSION);
 
     $boot = (string) file_get_contents($projectRoot . '/vgt-os.php');
-    $runner->assertContains('Version:           4.2.0', $boot);
+    $runner->assertContains('Version:           4.2.1', $boot);
     $runner->assertContains('License:           AGPL-3.0-or-later', $boot);
     $runner->assertNotContains('4.0.0', $boot);
     $runner->assertNotContains('4.1.0', $boot);
@@ -70,7 +70,7 @@ $runner->test('Generated layer-0 kernel uses var_export and passes php -l', func
     $runner->assertContains(var_export(str_replace('\\', '/', $pluginFile), true), $payload);
     $runner->assertContains('VGT_OMEGA_MU_KERNEL', $payload);
     $runner->assertContains('VGT_OMEGA_LAYER_ZERO', $payload);
-    $runner->assertContains('Version: 4.2.0', $payload);
+    $runner->assertContains('Version: 4.2.1', $payload);
     $runner->assertContains('AGPL-3.0-or-later', $payload);
     $runner->assertNotContains('{$plugin_path}', $payload);
     $runner->assertNotContains("'{\$plugin", $payload);
@@ -185,5 +185,5 @@ $runner->test('WordPress-shaped bootstrap wires environment, bridge, facade and 
     $runner->assertContains('WP_BOOT_OK', $output);
     $runner->assertContains('platform=wordpress / plugin', $output);
     $runner->assertContains('format=vgt-artifact/4.2', $output);
-    $runner->assertContains('version=4.2.0', $output);
+    $runner->assertContains('version=4.2.1', $output);
 });

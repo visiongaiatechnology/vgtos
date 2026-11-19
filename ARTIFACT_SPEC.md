@@ -1,7 +1,7 @@
 # VGT OMEGA — ARTIFACT SPECIFICATION
 
 **Format:** `vgt-artifact/4.2`
-**Runtime:** VGT Omega System 4.2.0
+**Runtime:** VGT Omega System 4.2.1
 **Status:** normative. The reference implementation (`src/Tooling/ArtifactPacker.php`, `bin/vgt-pack.php`) and the importer (`src/System/Vault/Storage/ArtifactInstaller.php`) implement this document.
 **License:** AGPL-3.0-or-later
 
@@ -321,4 +321,4 @@ The packaging machine needs `ext-zip` and `ext-openssl`; signing needs `ext-sodi
 
 ---
 
-*This specification is normative for VGT Omega 4.2.0. The reference encryptor is intentionally minimal: the commercial VGT APEX encryptor adds polymorphic AST obfuscation on top of the same container contract.*
+*This specification is normative for VGT Omega 4.2.1. The reference encryptor is intentionally minimal: the commercial VGT APEX encryptor adds polymorphic AST obfuscation on top of the same container contract.*

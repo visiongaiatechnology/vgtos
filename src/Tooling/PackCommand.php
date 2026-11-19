@@ -21,7 +21,7 @@ use VGT\Omega\Core\Exceptions\ValidationException;
  */
 final class PackCommand
 {
-    private const VERSION = '4.2.0';
+    private const VERSION = '4.2.1';
 
     public function run(array $argv): int
     {
@@ -202,7 +202,7 @@ final class PackCommand
     private function printHelp(): void
     {
         $help = <<<'TXT'
-VGT Omega reference encryptor (vgt-pack 4.2.0)
+VGT Omega reference encryptor (vgt-pack 4.2.1)
 Format specification: ARTIFACT_SPEC.md
 
 USAGE

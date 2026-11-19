@@ -137,7 +137,7 @@ DOM failures: **0**.
 | CSS enforces >=44px touch targets | PASS |  |
 | CSS uses system font stack + monospace for data | PASS |  |
 | !important only in reduced-motion block | PASS | 4 occurrence(s) |
-| assets stay lean (informational) | PASS | glass-2100.css 478 lines, console.js 296 lines |
+| assets stay lean (informational) | PASS | glass-2100.css 486 lines, console.js 296 lines |
 
 Source failures: **0**.
 

@@ -1,6 +1,6 @@
-# VGT Omega 4.2.0 — Verification Ledger & Limitations
+# VGT Omega 4.2.1 — Verification Ledger & Limitations
 
-This page documents what was actually verified for the 4.2.0 release, how to reproduce it, and
+This page documents what was actually verified for the 4.2.1 release, how to reproduce it, and
 what was **not** verified. A green test suite is corroboration, not a security guarantee.
 
 ---
@@ -9,13 +9,13 @@ what was **not** verified. A green test suite is corroboration, not a security g
 
 | Item | Value |
 |---|---|
-| Version | **4.2.0** |
+| Version | **4.2.1** |
 | Central version source | `VERSION` file, mirrored by the plugin header and `Plugin::VERSION` |
 | Artifact format | `vgt-artifact/4.2` |
 | License | AGPL-3.0-or-later |
 | Production source snapshot | **77 PHP files** (75 under `src/`, 1 under `bin/`, plus `vgt-os.php`) |
 | Snapshot recipe | PHP files under `src/` and `bin/` plus `vgt-os.php`, sorted by absolute path; aggregate = SHA-256 of the concatenated lowercase per-file SHA-256 hex digests |
-| Aggregate SHA-256 | `f60d30a8d00478893ae9675a2b76c28f42a723200c64406c2d5c40016495c60c` |
+| Aggregate SHA-256 | `542e6b398873964b17e4df1cf185415c4cae061cf67f2387b6719c2f33eb7283` |
 
 Reproduce the aggregate (PowerShell):
 
@@ -41,8 +41,8 @@ no WordPress runtime, no Composer, no network access during tests.
 | `php tests/run.php` | `total=71 passed=71 failed=0 skipped=0` | **0** |
 | `php tests/lint.php` | `files=97 lint_failures=0 line_budget_failures=0` | **0** |
 | `php tests/isolated/safe_mode.php` | `SAFE_MODE_OK mounted=0 locked=1` | 0 |
-| `php tests/isolated/wp_boot.php` | `WP_BOOT_OK platform=wordpress / plugin format=vgt-artifact/4.2 version=4.2.0` (WordPress-shaped stubs, not a real WordPress boot) | 0 |
-| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.0 (vgt-artifact/4.2)` | 0 |
+| `php tests/isolated/wp_boot.php` | `WP_BOOT_OK platform=wordpress / plugin format=vgt-artifact/4.2 version=4.2.1` (WordPress-shaped stubs, not a real WordPress boot) | 0 |
+| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.1 (vgt-artifact/4.2)` | 0 |
 | `php bin/vgt-pack.php --keygen` | valid 64-hex cloud key + Ed25519 keypair | 0 |
 | Signed package round-trip | pack → ZIP inspect → installer import, `signed=true` (part of the suite) | 0 |
 | `php tests/visual/render-dashboard.php` | 3 console preview documents rendered via the production render path | 0 |
@@ -68,15 +68,20 @@ no WordPress runtime, no Composer, no network access during tests.
 
 ### Independent adversarial re-check
 
-A separate adversarial verification pass was performed against the frozen source snapshot:
-69 independent attack probes (AAD/ciphertext swap, tamper/truncation, wrong-key cleanup,
-signature policy, archive attacks, stream traversal, kernel path-injection, no-plaintext-at-rest),
-9 HTTP-adapter scenarios and the isolated subprocesses above.
+A separate adversarial verification pass was performed against the frozen **4.2.0 security
+baseline** source snapshot: 69 independent attack probes (AAD/ciphertext swap, tamper/truncation,
+wrong-key cleanup, signature policy, archive attacks, stream traversal, kernel path-injection,
+no-plaintext-at-rest), 9 HTTP-adapter scenarios and the isolated subprocesses above.
 
 Result: **no security defect found in scope**; all six findings of the 4.1 audit are closed at the
 root cause. Honest classification: **GOLD**. PLATIN is not justified because core target-platform
 paths are `NOT_TESTED` (below), not because a vulnerability was found. The raw internal audit
 artifact is not part of the public repository.
+
+**Scope of the 4.2.1 delta:** only console CSS tokens/typography (white primary text) and version
+strings changed. No runtime, cryptography, storage, installer or authorization code was modified,
+so the 4.2.0 security-baseline evidence remains applicable; the 4.2.1 change itself was not subject
+to a new security audit.
 
 ---
 

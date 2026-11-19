@@ -277,7 +277,7 @@ final class ConsoleData
     /** @return array{0: string, 1: string, 2: string} version, code name, minimum PHP */
     private static function identity(): array
     {
-        $version = '4.2.0';
+        $version = '4.2.1';
         $codeName = 'OMEGA';
         $minPhp = '8.1.0';
 

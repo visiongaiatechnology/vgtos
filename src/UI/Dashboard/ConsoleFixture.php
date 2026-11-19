@@ -32,7 +32,7 @@ final class ConsoleFixture
 
         return [
             'state' => ConsoleData::STATE_READY,
-            'version' => '4.2.0',
+            'version' => '4.2.1',
             'codeName' => 'OMEGA',
             'phpVersion' => '8.3.14',
             'minPhpVersion' => '8.1.0',

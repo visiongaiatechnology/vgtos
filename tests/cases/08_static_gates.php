@@ -115,11 +115,11 @@ $runner->test('Legacy v4.0/v4.1 files and namespaces are gone', function () use 
 });
 
 $runner->test('Version and license identity are consistent across artifacts', function () use ($runner, $projectRoot): void {
-    $runner->assertSame('4.2.0', trim((string) file_get_contents($projectRoot . '/VERSION')));
+    $runner->assertSame('4.2.1', trim((string) file_get_contents($projectRoot . '/VERSION')));
 
     $checks = [
-        '/vgt-os.php' => 'Version:           4.2.0',
-        '/src/Bootstrap/Plugin.php' => "VERSION = '4.2.0'",
+        '/vgt-os.php' => 'Version:           4.2.1',
+        '/src/Bootstrap/Plugin.php' => "VERSION = '4.2.1'",
         '/src/Bootstrap/Plugin.php' => 'AGPL-3.0-or-later',
         '/composer.json' => '"license": "AGPL-3.0-or-later"',
     ];
@@ -135,7 +135,7 @@ $runner->test('Version and license identity are consistent across artifacts', fu
     $readme = $projectRoot . '/README.md';
     if (is_file($readme)) {
         $readmeContent = (string) file_get_contents($readme);
-        $runner->assertContains('4.2.0', $readmeContent);
+        $runner->assertContains('4.2.1', $readmeContent);
         $runner->assertNotContains('MIT License', $readmeContent);
     }
 });
