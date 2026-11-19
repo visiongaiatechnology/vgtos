@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — destructive action confirmation dialog (Z4).
+ * GeDefense WPR console — destructive action confirmation dialog (Z4).
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega artifact repository.
+ * GeDefense WPR artifact repository.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

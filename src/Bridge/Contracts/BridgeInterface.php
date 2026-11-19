@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega bridge contract.
+ * GeDefense WPR bridge contract.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name:       VGT Omega System
+ * Plugin Name:       GeDefense WPR
  * Plugin URI:        https://visiongaiatechnology.de
- * Description:       Sovereign encrypted artifact vault, universal host bridge and Glass 2100 security console for WordPress. Loads AES-256-GCM artifacts from RAM only.
- * Version:           4.2.1
+ * Description:       GeDefense WPR — sovereign encrypted artifact vault, universal host bridge and Glass 2100 security console for WordPress. Part of the GeDefense security series. Loads AES-256-GCM artifacts from RAM only.
+ * Version:           4.2.3
  * Requires at least: 6.0
  * Requires PHP:      8.1
  * Author:            VisionGaia Technology
  * Author URI:        https://visiongaiatechnology.de
  * License:           AGPL-3.0-or-later
  * License URI:       https://www.gnu.org/licenses/agpl-3.0.html
- * Text Domain:       vgt-omega
+ * Text Domain:       ge-defense-wpr
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

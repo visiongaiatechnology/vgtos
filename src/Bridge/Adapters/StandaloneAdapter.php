@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega standalone bridge adapter.
+ * GeDefense WPR standalone bridge adapter.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

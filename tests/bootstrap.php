@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega test bootstrap.
+ * GeDefense WPR test bootstrap.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

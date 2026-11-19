@@ -1,11 +1,11 @@
-# VGT OMEGA — ARTIFACT SPECIFICATION
+# GEDEFENSE WPR — ARTIFACT SPECIFICATION
 
 **Format:** `vgt-artifact/4.2`
-**Runtime:** VGT Omega System 4.2.1
+**Runtime:** GeDefense WPR 4.2.3
 **Status:** normative. The reference implementation (`src/Tooling/ArtifactPacker.php`, `bin/vgt-pack.php`) and the importer (`src/System/Vault/Storage/ArtifactInstaller.php`) implement this document.
 **License:** AGPL-3.0-or-later
 
-This document defines the `.vgt` package format, the encrypted container layout, the manifest schema, the AAD contexts, the signature format and every hard limit enforced by the runtime. A third-party encryptor that follows this document produces packages that VGT Omega accepts.
+This document defines the `.vgt` package format, the encrypted container layout, the manifest schema, the AAD contexts, the signature format and every hard limit enforced by the runtime. A third-party encryptor that follows this document produces packages that GeDefense WPR accepts.
 
 ---
 
@@ -13,7 +13,7 @@ This document defines the `.vgt` package format, the encrypted container layout,
 
 | Term | Meaning |
 |---|---|
-| **Cloud key** | 32 raw bytes (64 hex) that protect the package in transit. It is entered by the administrator during import and is never stored by VGT Omega. |
+| **Cloud key** | 32 raw bytes (64 hex) that protect the package in transit. It is entered by the administrator during import and is never stored by GeDefense WPR. |
 | **Artifact key** | Per-artifact AES-256 key derived on the server with HKDF-SHA256. Never leaves the server, never persisted. |
 | **Vault** | Server-side directory that stores only encrypted manifests and blob payloads. |
 | **Blob** | A single file below `artifacts/<artifact-id>/blobs/` with a random 32-hex name and the `.vgtblob` extension. |
@@ -39,7 +39,7 @@ artifact.zip
 * `vgt_manifest.vgt` **must** exist and must be a cloud-key encrypted container (§4) whose AAD is `vgt:pack:/vgt_manifest.vgt`.
 * Every other entry is either an encrypted payload container or a cleartext *public asset*.
 * The archive contains no directory metadata requirements; directories are implied by path names.
-* VGT Omega never trusts archive metadata for path resolution: every name is validated and normalized before extraction (§7).
+* GeDefense WPR never trusts archive metadata for path resolution: every name is validated and normalized before extraction (§7).
 
 ---
 
@@ -111,7 +111,7 @@ The manifest plaintext is UTF-8 JSON. Unknown top-level fields are rejected.
 
 ### 3.3 Installed manifest
 
-After import, VGT Omega writes a new manifest (same schema) whose `files` entries carry the final `blob` name, the final compression flag and the verified size/hash. The installed manifest is encrypted with the artifact key and the AAD `vgt:v4:<artifact-id>:/vgt_manifest.vgt`. A transported signature is verified at import time but is **not** copied into the installed manifest (the payload is re-encrypted, so the old signature would no longer match); the metadata field `signed` records that the source package was signature-verified.
+After import, GeDefense WPR writes a new manifest (same schema) whose `files` entries carry the final `blob` name, the final compression flag and the verified size/hash. The installed manifest is encrypted with the artifact key and the AAD `vgt:v4:<artifact-id>:/vgt_manifest.vgt`. A transported signature is verified at import time but is **not** copied into the installed manifest (the payload is re-encrypted, so the old signature would no longer match); the metadata field `signed` records that the source package was signature-verified.
 
 ---
 
@@ -234,7 +234,7 @@ On any exception the staging directory is removed and no partial artifact remain
 ## 9. Runtime mounting
 
 1. The importer derives the artifact key: `HKDF-SHA256(master, info="vgt-artifact|<id>")`.
-2. On boot, VGT Omega reads and authenticates the installed manifest, verifies the optional signature and requires every file entry to reference an installed blob.
+2. On boot, GeDefense WPR reads and authenticates the installed manifest, verifies the optional signature and requires every file entry to reference an installed blob.
 3. A read-only `vgt://` stream wrapper is registered. `include_once "vgt://<id>/plugin.php"` decrypts the blob on demand, authenticates it with the bound AAD, and serves the plaintext from process-local RAM only.
 4. Optional manifest `classmap` entries register lazy autoloaders, so only the entry bootstrap and the classes actually used in a request are decrypted and parsed.
 5. `stat()` on `vgt://` returns the real cleartext size and the stable manifest mtime.
@@ -321,4 +321,4 @@ The packaging machine needs `ext-zip` and `ext-openssl`; signing needs `ext-sodi
 
 ---
 
-*This specification is normative for VGT Omega 4.2.1. The reference encryptor is intentionally minimal: the commercial VGT APEX encryptor adds polymorphic AST obfuscation on top of the same container contract.*
+*This specification is normative for GeDefense WPR 4.2.3. The reference encryptor is intentionally minimal: the commercial VGT APEX encryptor adds polymorphic AST obfuscation on top of the same container contract.*

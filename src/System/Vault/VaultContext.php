@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega vault service context.
+ * GeDefense WPR vault service context.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,4 +1,4 @@
-# VGT Omega — Glass 2100 console: visual evidence
+# GeDefense WPR — Glass 2100 console: visual evidence
 
 ## Status: VISUAL_QA = NOT_TESTED (screenshots blocked by the build environment)
 

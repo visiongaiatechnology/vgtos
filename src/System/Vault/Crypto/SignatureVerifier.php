@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega Ed25519 manifest signature verification.
+ * GeDefense WPR Ed25519 manifest signature verification.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

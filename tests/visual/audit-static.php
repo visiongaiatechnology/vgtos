@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega — static accessibility, semantics and source audit.
+ * GeDefense WPR — static accessibility, semantics and source audit.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -197,7 +197,16 @@ foreach ($previews as $previewName) {
         }
     }
     $record($previewName, 'no positive tabindex', $positiveTabindex === 0);
-    $record($previewName, 'no images/iframes/objects/canvas', $q('//img|//iframe|//object|//embed|//canvas')->length === 0);
+    $logoImages = $q('//img');
+    $logoOk = $logoImages->length === 1
+        && $logoImages->item(0) instanceof \DOMElement
+        && str_contains($logoImages->item(0)->getAttribute('src'), 'assets/ge-defense.png')
+        && $q('//img[@alt]')->length === 1;
+    $record(
+        $previewName,
+        'only the local GeDefense logo image; no iframes/objects/embeds/canvas',
+        $logoOk && $q('//iframe|//object|//embed|//canvas')->length === 0
+    );
     $record($previewName, 'no autofocus', $q('//*[@autofocus]')->length === 0);
     $record($previewName, 'no <table> (registry is a definition-list row list)', $q('//table')->length === 0);
 
@@ -348,7 +357,7 @@ $jsLines = substr_count($js, "\n");
 $recordSource('assets stay lean (informational)', true, 'glass-2100.css ' . $cssLines . ' lines, console.js ' . $jsLines . ' lines');
 
 /* ── Markdown report ──────────────────────────────────────────────────── */
-$md = "# VGT Omega — static accessibility, semantics and source audit\n\n";
+$md = "# GeDefense WPR — static accessibility, semantics and source audit\n\n";
 $md .= "Scope: the three rendered preview documents (real `Dashboard::renderWith(ConsoleData::fromFixture())`\n";
 $md .= "output) plus the shipped PHP/CSS/JS sources.\n\n";
 $md .= "> **VISUAL_QA = NOT_TESTED (screenshots blocked by the build environment).** Chromium/Firefox cannot start in\n";

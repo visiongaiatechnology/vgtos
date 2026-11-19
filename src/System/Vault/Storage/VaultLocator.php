@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega vault locator.
+ * GeDefense WPR vault locator.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

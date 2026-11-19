@@ -1,4 +1,48 @@
-# CHANGELOG — VGT OMEGA SYSTEM
+# CHANGELOG — GEDEFENSE WPR
+
+> The product was named **VGT Omega** up to 4.2.2. It was renamed to **GeDefense WPR** in 4.2.3
+> and now carries the GeDefense series identity. Historical entries below keep their original
+> wording; the internal namespace (`VGT\Omega`), `vgt://` protocol, option keys and artifact format
+> are unchanged.
+
+## 4.2.3 — 2026-11-19 — GeDefense Series Rebrand
+
+Rebranding release: VGT Omega joins the GeDefense security series as **GeDefense WPR**
+(WordPress Runtime).
+
+### Changed
+
+* **Product name:** plugin header, admin menu label, console title, eyebrow, footer, CLI help,
+  generated layer-0 kernel header, README, SECURITY, ARTIFACT_SPEC, CONTRIBUTING, verification
+  ledger and textual code documentation now use **GeDefense WPR**.
+* **Official logo:** the console masthead replaces the inline SVG seal
+  (`vgt-icon vgt-seal__glyph`) with the official GeDefense shield (`assets/ge-defense.png`,
+  vendored from the VGT brand asset library) rendered at 58×58 px. The README shows the same
+  official logo in the brand block.
+* **Distribution identity:** Composer package renamed to
+  `visiongaiatechnology/ge-defense-wpr`, plugin ZIP/folder renamed to `ge-defense-wpr`,
+  text domain `ge-defense-wpr`; admin menu slug stays `vgt-console` for bookmark/backward
+  compatibility.
+* **Product naming:** console code name is now `WORDPRESS RUNTIME`; README explicitly places the
+  project in the GeDefense family alongside GeDefense Linux/GeDefenseWP work.
+* **Version identity:** every version source reports 4.2.3 (VERSION, plugin header,
+  `Plugin::VERSION`, layer-0 kernel, CLI, README, docs, tests).
+
+### Unchanged
+
+* No runtime, cryptography, storage, installer, authorization or artifact-format logic changed.
+* `VGT\Omega` PHP namespace, `vgt://` stream protocol, `VGT_OMEGA_*` constants, option keys
+  (`vgt_vault_*`), artifact format `vgt-artifact/4.2`, vault layout and HKDF domain strings are
+  intentionally retained so existing installations and artifacts keep working.
+* Console CSS tokens and white-primary typography from 4.2.1 remain unchanged.
+
+### Migration
+
+1. Deactivate/delete the old `vgt-omega` plugin folder (WordPress treats the new
+   `ge-defense-wpr` folder as a separate plugin because the slug changed).
+2. Install and activate `ge-defense-wpr-4.2.3.zip`.
+3. Existing vault data, options and artifacts remain usable: no cryptographic names changed.
+4. Re-enter any custom `VGT_OMEGA_*` constants only if you had added them; they are unchanged.
 
 ## 4.2.1 — 2026-11-19 — Console Readability & Contrast Patch
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega bootstrap plugin.
+ * GeDefense WPR bootstrap plugin.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -28,9 +28,9 @@ use VGT\Omega\UI\Dashboard\Dashboard;
  */
 final class Plugin
 {
-    public const VERSION = '4.2.1';
+    public const VERSION = '4.2.3';
 
-    public const CODE_NAME = 'OMEGA';
+    public const CODE_NAME = 'WORDPRESS RUNTIME';
 
     public const MIN_PHP_VERSION = '8.1.0';
 
@@ -65,7 +65,7 @@ final class Plugin
         if (version_compare(PHP_VERSION, self::MIN_PHP_VERSION, '<')) {
             add_action('admin_notices', static function (): void {
                 echo '<div class="notice notice-error"><p>'
-                    . esc_html('VGT Omega requires PHP ' . Plugin::MIN_PHP_VERSION . ' or newer.')
+                    . esc_html('GeDefense WPR requires PHP ' . Plugin::MIN_PHP_VERSION . ' or newer.')
                     . '</p></div>';
             });
 
@@ -144,7 +144,7 @@ final class Plugin
     public static function identity(): array
     {
         return [
-            'name' => 'VGT Omega System',
+            'name' => 'GeDefense WPR',
             'version' => self::VERSION,
             'code_name' => self::CODE_NAME,
             'php' => PHP_VERSION,

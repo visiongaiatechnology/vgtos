@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega artifact classmap autoloader.
+ * GeDefense WPR artifact classmap autoloader.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

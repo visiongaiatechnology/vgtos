@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega public asset mirror.
+ * GeDefense WPR public asset mirror.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

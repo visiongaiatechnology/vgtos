@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega security exception.
+ * GeDefense WPR security exception.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

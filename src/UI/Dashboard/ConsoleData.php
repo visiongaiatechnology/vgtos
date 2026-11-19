@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — immutable view data.
+ * GeDefense WPR console — immutable view data.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -32,6 +32,12 @@ final class ConsoleData
     public const STATE_READY = 'ready';
 
     public const STATE_OFFLINE = 'offline';
+
+    public const PRODUCT_NAME = 'GeDefense WPR';
+
+    public const PRODUCT_SERIES = 'GeDefense';
+
+    public const LOGO_RELATIVE_PATH = 'assets/ge-defense.png';
 
     public const SAFE_MODE_RECOVERY_SNIPPET = "define('VGT_OMEGA_SAFE_MODE', false);";
 
@@ -277,8 +283,8 @@ final class ConsoleData
     /** @return array{0: string, 1: string, 2: string} version, code name, minimum PHP */
     private static function identity(): array
     {
-        $version = '4.2.1';
-        $codeName = 'OMEGA';
+        $version = '4.2.3';
+        $codeName = 'WORDPRESS RUNTIME';
         $minPhp = '8.1.0';
 
         if (class_exists(Plugin::class)) {
@@ -293,6 +299,24 @@ final class ConsoleData
         }
 
         return [$version, $codeName, $minPhp];
+    }
+
+    /**
+     * Public URL of the official GeDefense logo shipped with the plugin.
+     *
+     * Returns '' outside a WordPress request without a host URL; callers render
+     * an inline fallback icon in that case (never a broken image request).
+     */
+    public static function logoUrl(): string
+    {
+        if (!function_exists('plugins_url')) {
+            return '';
+        }
+
+        $pluginFile = defined('VGT_OMEGA_FILE') ? (string) constant('VGT_OMEGA_FILE') : '';
+        $url = plugins_url(self::LOGO_RELATIVE_PATH, $pluginFile);
+
+        return is_string($url) && $url !== '' ? $url : '';
     }
 
     /** @return array{type: string, message: string, reference: string}|null */

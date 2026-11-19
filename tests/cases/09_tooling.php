@@ -36,7 +36,7 @@ $runner->test('vgt-pack --version reports format 4.2', function () use ($runner,
         return;
     }
 
-    $runner->assertContains('4.2.1', $output);
+    $runner->assertContains('4.2.3', $output);
     $runner->assertContains('vgt-artifact/4.2', $output);
 });
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega virtual path parsing.
+ * GeDefense WPR virtual path parsing.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

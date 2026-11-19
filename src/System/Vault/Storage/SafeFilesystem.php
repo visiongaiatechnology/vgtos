@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega hardened file system primitives.
+ * GeDefense WPR hardened file system primitives.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

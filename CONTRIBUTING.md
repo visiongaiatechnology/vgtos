@@ -1,6 +1,6 @@
-# Contributing to VGT Omega
+# Contributing to GeDefense WPR
 
-Thanks for helping improve VGT Omega. This project handles executable code and cryptography, so
+Thanks for helping improve GeDefense WPR. This project handles executable code and cryptography, so
 contributions are held to a strict bar.
 
 ## Ground rules

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega — standalone visual QA harness.
+ * GeDefense WPR — standalone visual QA harness.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -49,7 +49,12 @@ if (!function_exists('admin_url')) {
 if (!function_exists('plugins_url')) {
     function plugins_url(string $path = '', string $plugin = ''): string
     {
-        return 'https://example.test/wp-content/plugins/vgt-omega/' . ltrim($path, '/');
+        // The visual harness serves shipped assets from the repository root.
+        if (str_starts_with($path, 'assets/')) {
+            return '../../' . ltrim($path, '/');
+        }
+
+        return 'https://example.test/wp-content/plugins/ge-defense-wpr/' . ltrim($path, '/');
     }
 }
 
@@ -163,7 +168,7 @@ HTML;
         . $shell
         . '</head><body class="vgt-preview">'
         . '<div class="vgt-preview-bar">'
-        . '<span><b>VGT Omega</b> &middot; Glass 2100 preview harness &middot; WordPress admin chrome omitted</span>'
+        . '<span><b>GeDefense WPR</b> &middot; Glass 2100 preview harness &middot; WordPress admin chrome omitted</span>'
         . '<span id="vgt-preview-viewport"></span>'
         . '</div>'
         . $console
@@ -179,9 +184,9 @@ $readyData = ConsoleData::fromFixture();
 $degradedData = ConsoleData::fromFixture(ConsoleFixture::offlineOverrides());
 
 $previews = [
-    'dashboard-preview.html' => ['VGT Omega — console preview', $readyData, false],
-    'dashboard-preview-safe-mode.html' => ['VGT Omega — safe mode / boot failure preview', $degradedData, false],
-    'dashboard-preview-dialog.html' => ['VGT Omega — delete confirmation dialog preview', $readyData, true],
+    'dashboard-preview.html' => ['GeDefense WPR — console preview', $readyData, false],
+    'dashboard-preview-safe-mode.html' => ['GeDefense WPR — safe mode / boot failure preview', $degradedData, false],
+    'dashboard-preview-dialog.html' => ['GeDefense WPR — delete confirmation dialog preview', $readyData, true],
 ];
 
 $failures = [];
@@ -196,7 +201,7 @@ foreach ($previews as $fileName => [$title, $data, $openDialog]) {
         continue;
     }
 
-    $checks = ['vgt-console', 'Artifact vault', 'Deploy or rotate artifact', 'System diagnostics'];
+    $checks = ['vgt-console', 'GeDefense WPR', 'vgt-seal__logo', 'Artifact vault', 'Deploy or rotate artifact', 'System diagnostics'];
     if ($openDialog) {
         $checks[] = 'vgt-confirm-dialog';
     }

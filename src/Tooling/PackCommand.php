@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega reference packer CLI command.
+ * GeDefense WPR reference packer CLI command.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -21,7 +21,7 @@ use VGT\Omega\Core\Exceptions\ValidationException;
  */
 final class PackCommand
 {
-    private const VERSION = '4.2.1';
+    private const VERSION = '4.2.3';
 
     public function run(array $argv): int
     {
@@ -202,7 +202,7 @@ final class PackCommand
     private function printHelp(): void
     {
         $help = <<<'TXT'
-VGT Omega reference encryptor (vgt-pack 4.2.1)
+GeDefense WPR reference encryptor (vgt-pack 4.2.3)
 Format specification: ARTIFACT_SPEC.md
 
 USAGE

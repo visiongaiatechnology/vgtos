@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega reference artifact packer.
+ * GeDefense WPR reference artifact packer.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

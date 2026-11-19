@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega dependency injection container.
+ * GeDefense WPR dependency injection container.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

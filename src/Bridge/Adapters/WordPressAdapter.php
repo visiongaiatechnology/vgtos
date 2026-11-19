@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega WordPress bridge adapter.
+ * GeDefense WPR WordPress bridge adapter.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega atomic artifact installer.
+ * GeDefense WPR atomic artifact installer.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

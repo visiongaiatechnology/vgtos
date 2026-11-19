@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — inline SVG icon set.
+ * GeDefense WPR console — inline SVG icon set.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

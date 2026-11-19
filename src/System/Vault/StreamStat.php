@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega virtual file stat builder.
+ * GeDefense WPR virtual file stat builder.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

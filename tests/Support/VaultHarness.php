@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega test harness: builds a real vault subsystem in an isolated temp dir.
+ * GeDefense WPR test harness: builds a real vault subsystem in an isolated temp dir.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

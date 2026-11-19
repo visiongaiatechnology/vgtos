@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * VGT Omega reference encryptor CLI.
+ * GeDefense WPR reference encryptor CLI.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

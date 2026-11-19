@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega path security primitives.
+ * GeDefense WPR path security primitives.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega vault path value object.
+ * GeDefense WPR vault path value object.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

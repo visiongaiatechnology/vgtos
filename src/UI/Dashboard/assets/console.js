@@ -1,5 +1,5 @@
 /*
- * VGT OMEGA — CONSOLE INTERACTION LAYER
+ * GEDEFENSE WPR — CONSOLE INTERACTION LAYER
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * Vanilla, dependency-free, CSP-safe. Everything here is progressive

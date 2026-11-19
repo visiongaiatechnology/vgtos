@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — deployment / rotation rail.
+ * GeDefense WPR console — deployment / rotation rail.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

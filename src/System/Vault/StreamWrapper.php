@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega read-only virtual file system (vgt://).
+ * GeDefense WPR read-only virtual file system (vgt://).
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

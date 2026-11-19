@@ -1,11 +1,11 @@
-# VGT OMEGA — SECURITY MODEL, FINDINGS AND RECOVERY
+# GEDEFENSE WPR — SECURITY MODEL, FINDINGS AND RECOVERY
 
-**Version:** 4.2.1
+**Version:** 4.2.3
 **Security profile:** `GEDEFENSE_WP`
 **Scope:** runtime, storage, installer, stream wrapper, admin surface, layer-0 deployment
 **License:** AGPL-3.0-or-later
 
-This document is the authoritative security record of the 4.2.x line. The security baseline is the 4.2.0 hardening release; 4.2.1 is a console readability/version patch with no runtime or security-logic changes. It states what is protected, how, what was broken before, what is still a residual risk, and how an operator recovers from a broken state. Claims without a pointer to code or a test are not made.
+This document is the authoritative security record of the 4.2.x line. The security baseline is the 4.2.0 hardening release; 4.2.1 was a console readability patch and 4.2.3 is a branding/logo/version release — neither changed runtime or security logic. It states what is protected, how, what was broken before, what is still a residual risk, and how an operator recovers from a broken state. Claims without a pointer to code or a test are not made.
 
 ---
 
@@ -47,7 +47,7 @@ Supported for security fixes: `4.2.x`. The 4.0/4.1 line is end-of-life; the lega
 
 * Protecting code against a server that is already compromised.
 * Hiding code from a malicious administrator who can install arbitrary plugins — such an actor can read plaintext in RAM. Signature policy raises the bar for *supply-chain* compromise, not for a compromised admin.
-* DRM or licensing enforcement. VGT Omega is a confidentiality/integrity runtime, not a license server.
+* DRM or licensing enforcement. GeDefense WPR is a confidentiality/integrity runtime, not a license server.
 
 ---
 
@@ -112,7 +112,7 @@ The 4.1 repository was published as "Platin/Diamant" while containing the findin
 
 ### Source identity (VGT-SID-001) — resolved
 
-* Version conflict (`vgt-os.php` 4.1.0 Platin, `MuDeployer` 4.0.0 Diamant, README 4.0.0, Dashboard "Core 4.0") is resolved to **4.2.0** (security baseline) and **4.2.1** (console readability patch) across the plugin header, `Plugin::VERSION`, kernel payload, console, composer metadata, README, CHANGELOG and ARTIFACT_SPEC.
+* Version conflict (`vgt-os.php` 4.1.0 Platin, `MuDeployer` 4.0.0 Diamant, README 4.0.0, Dashboard "Core 4.0") is resolved to **4.2.0** (security baseline) and **4.2.3** (console readability patch) across the plugin header, `Plugin::VERSION`, kernel payload, console, composer metadata, README, CHANGELOG and ARTIFACT_SPEC.
 * License conflict: the plugin header declared "AGPLv3" and embedded an MIT permission block while `LICENSE` is AGPLv3. The MIT block is removed; every source file carries `SPDX-License-Identifier: AGPL-3.0-or-later`.
 * The 17-byte `LaravelAdapter.php` placeholder is replaced by a real adapter; the bridge namespace break (`VGT\Bridge` vs `VGT\Omega`) is resolved to `VGT\Omega\Bridge\*`; the service provider is actually reachable; the fallback boot path now builds the container (previously only the generated mu-plugin did).
 
@@ -212,7 +212,7 @@ The following commands are the reproducible release evidence. Actual results on 
 | `php tests/visual/render-dashboard.php` | exit 0 · 3 console preview documents rendered via the production render path |
 | `php tests/visual/audit-contrast.php` | exit 0 · 29 contrast pairs, 0 failures |
 | `php tests/visual/audit-static.php` | exit 0 · 87 DOM/semantics checks, 32 source/design checks, 0 failures |
-| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.1 (vgt-artifact/4.2)` |
+| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.3 (vgt-artifact/4.2)` |
 | Signed package round-trip | covered by test `vgt-pack produces an installable, signed package` (exit 0) |
 
 Independent adversarial re-check of FIND-001…006 on the final tree: an internal adversarial re-audit was performed against the frozen production snapshot. Result: **no security defect found in scope; all six findings PASS (closed at root cause, with independent probes); honest classification GOLD; release gate ELIGIBLE_FOR_REVIEW with conditions C-1…C-5** (real staging-WordPress E2E, APCu/PclZip/FPM paths, web-server deny enforcement, supply-chain configuration, separate legal review). The raw internal audit artifact is not published; the public summary, snapshot recipe and reproducible ledger are in [`docs/VERIFICATION.md`](docs/VERIFICATION.md). It is an internal re-audit, not third-party certification.

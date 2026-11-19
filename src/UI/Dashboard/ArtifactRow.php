@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — artifact registry row normalization.
+ * GeDefense WPR console — artifact registry row normalization.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 {
-    "name": "visiongaiatechnology/vgt-omega",
-    "description": "Sovereign encrypted artifact vault, universal host bridge and security console for WordPress.",
+    "name": "visiongaiatechnology/ge-defense-wpr",
+    "description": "GeDefense WPR — sovereign encrypted artifact runtime, universal host bridge and Glass 2100 security console for WordPress.",
     "type": "wordpress-plugin",
     "license": "AGPL-3.0-or-later",
     "homepage": "https://visiongaiatechnology.de",

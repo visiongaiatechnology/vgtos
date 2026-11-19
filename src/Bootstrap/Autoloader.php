@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega PSR-4 autoloader.
+ * GeDefense WPR PSR-4 autoloader.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

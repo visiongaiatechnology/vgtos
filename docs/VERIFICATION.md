@@ -1,6 +1,6 @@
-# VGT Omega 4.2.1 — Verification Ledger & Limitations
+# GeDefense WPR 4.2.3 — Verification Ledger & Limitations
 
-This page documents what was actually verified for the 4.2.1 release, how to reproduce it, and
+This page documents what was actually verified for the 4.2.3 release, how to reproduce it, and
 what was **not** verified. A green test suite is corroboration, not a security guarantee.
 
 ---
@@ -9,13 +9,13 @@ what was **not** verified. A green test suite is corroboration, not a security g
 
 | Item | Value |
 |---|---|
-| Version | **4.2.1** |
+| Version | **4.2.3** |
 | Central version source | `VERSION` file, mirrored by the plugin header and `Plugin::VERSION` |
 | Artifact format | `vgt-artifact/4.2` |
 | License | AGPL-3.0-or-later |
 | Production source snapshot | **77 PHP files** (75 under `src/`, 1 under `bin/`, plus `vgt-os.php`) |
 | Snapshot recipe | PHP files under `src/` and `bin/` plus `vgt-os.php`, sorted by absolute path; aggregate = SHA-256 of the concatenated lowercase per-file SHA-256 hex digests |
-| Aggregate SHA-256 | `542e6b398873964b17e4df1cf185415c4cae061cf67f2387b6719c2f33eb7283` |
+| Aggregate SHA-256 | `24879a691f9417d5c948d609aeff6d6704bb7a94e0bc27095c801730842d39b0` |
 
 Reproduce the aggregate (PowerShell):
 
@@ -41,8 +41,8 @@ no WordPress runtime, no Composer, no network access during tests.
 | `php tests/run.php` | `total=71 passed=71 failed=0 skipped=0` | **0** |
 | `php tests/lint.php` | `files=97 lint_failures=0 line_budget_failures=0` | **0** |
 | `php tests/isolated/safe_mode.php` | `SAFE_MODE_OK mounted=0 locked=1` | 0 |
-| `php tests/isolated/wp_boot.php` | `WP_BOOT_OK platform=wordpress / plugin format=vgt-artifact/4.2 version=4.2.1` (WordPress-shaped stubs, not a real WordPress boot) | 0 |
-| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.1 (vgt-artifact/4.2)` | 0 |
+| `php tests/isolated/wp_boot.php` | `WP_BOOT_OK platform=wordpress / plugin format=vgt-artifact/4.2 version=4.2.3` (WordPress-shaped stubs, not a real WordPress boot) | 0 |
+| `php bin/vgt-pack.php --version` | `vgt-pack 4.2.3 (vgt-artifact/4.2)` | 0 |
 | `php bin/vgt-pack.php --keygen` | valid 64-hex cloud key + Ed25519 keypair | 0 |
 | Signed package round-trip | pack → ZIP inspect → installer import, `signed=true` (part of the suite) | 0 |
 | `php tests/visual/render-dashboard.php` | 3 console preview documents rendered via the production render path | 0 |
@@ -78,10 +78,11 @@ root cause. Honest classification: **GOLD**. PLATIN is not justified because cor
 paths are `NOT_TESTED` (below), not because a vulnerability was found. The raw internal audit
 artifact is not part of the public repository.
 
-**Scope of the 4.2.1 delta:** only console CSS tokens/typography (white primary text) and version
-strings changed. No runtime, cryptography, storage, installer or authorization code was modified,
-so the 4.2.0 security-baseline evidence remains applicable; the 4.2.1 change itself was not subject
-to a new security audit.
+**Scope of the 4.2.3 delta:** product branding (name, official GeDefense logo asset, console
+masthead/strings, README/docs), console CSS/typography from 4.2.1 and version strings. No runtime,
+cryptography, storage, installer or authorization code was modified, so the 4.2.0
+security-baseline evidence remains applicable; the 4.2.3 change itself was not subject to a new
+security audit.
 
 ---
 
@@ -107,7 +108,7 @@ render path, not screenshots.
 
 ## 4. Pre-production checklist
 
-Before operating VGT Omega in production:
+Before operating GeDefense WPR in production:
 
 1. Run a staging WordPress end-to-end test: activate, deploy a signed artifact through the real
    upload form, read it via `vgt://`, rotate it, delete it, enable/disable safe mode, verify layer-0.

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — design-time fixture data.
+ * GeDefense WPR console — design-time fixture data.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -32,8 +32,8 @@ final class ConsoleFixture
 
         return [
             'state' => ConsoleData::STATE_READY,
-            'version' => '4.2.1',
-            'codeName' => 'OMEGA',
+            'version' => '4.2.3',
+            'codeName' => 'WORDPRESS RUNTIME',
             'phpVersion' => '8.3.14',
             'minPhpVersion' => '8.1.0',
             'safeMode' => false,

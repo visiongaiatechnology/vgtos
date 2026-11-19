@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega asset URL resolver.
+ * GeDefense WPR asset URL resolver.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

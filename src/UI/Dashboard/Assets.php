@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — local asset loading.
+ * GeDefense WPR console — local asset loading.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -41,7 +41,7 @@ final class Assets
             return;
         }
 
-        $version = defined('VGT_OMEGA_VERSION') ? (string) constant('VGT_OMEGA_VERSION') : '4.2.0';
+        $version = defined('VGT_OMEGA_VERSION') ? (string) constant('VGT_OMEGA_VERSION') : '4.2.3';
 
         $bridge->enqueueCss(self::CSS_HANDLE, plugins_url(self::CSS_RELATIVE, $pluginFile), [], $version);
         $bridge->enqueueJs(self::JS_HANDLE, plugins_url(self::JS_RELATIVE, $pluginFile), [], $version, true);

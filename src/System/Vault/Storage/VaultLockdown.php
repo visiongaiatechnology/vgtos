@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega vault access lockdown.
+ * GeDefense WPR vault access lockdown.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -27,7 +27,7 @@ use VGT\Omega\Core\Exceptions\SecurityException;
 final class VaultLockdown
 {
     private const HTACCESS = <<<'HTACCESS'
-# VGT Omega vault lockdown (managed file, do not edit)
+# GeDefense WPR vault lockdown (managed file, do not edit)
 <IfModule mod_authz_core.c>
     Require all denied
 </IfModule>
@@ -54,7 +54,7 @@ XML;
 
     private const INDEX_PHP = <<<'PHP'
 <?php
-// VGT Omega vault lockdown (managed file, do not edit).
+// GeDefense WPR vault lockdown (managed file, do not edit).
 http_response_code(403);
 header('Content-Type: text/plain; charset=utf-8');
 echo 'Forbidden';

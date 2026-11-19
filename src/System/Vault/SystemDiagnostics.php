@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega system diagnostics.
+ * GeDefense WPR system diagnostics.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

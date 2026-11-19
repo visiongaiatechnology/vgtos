@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega lint gate.
+ * GeDefense WPR lint gate.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

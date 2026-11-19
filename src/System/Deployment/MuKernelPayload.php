@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega layer-0 MU kernel payload generator.
+ * GeDefense WPR layer-0 MU kernel payload generator.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace VGT\Omega\System\Deployment;
 
 /**
- * Generates the mu-plugin kernel that loads the VGT Omega runtime as a layer-0
+ * Generates the mu-plugin kernel that loads the GeDefense WPR runtime as a layer-0
  * MU plugin, before regular plugins are loaded.
  *
  * The payload is deterministic for a given plugin path and version, so the
@@ -26,7 +26,7 @@ final class MuKernelPayload
 {
     public const FILENAME = 'vgt-omega-kernel.php';
 
-    public const DEFAULT_VERSION = '4.2.1';
+    public const DEFAULT_VERSION = '4.2.3';
 
     private const VERSION_PATTERN = '/^[0-9]{1,3}(\.[0-9]{1,3}){1,3}(-[A-Za-z0-9.]+)?$/';
 
@@ -35,9 +35,9 @@ final class MuKernelPayload
     private const TEMPLATE = <<<'VGT_KERNEL'
 <?php
 /**
- * Plugin Name: VGT Omega Layer-0 Kernel
+ * Plugin Name: GeDefense WPR Layer-0 Kernel
  * Plugin URI: https://visiongaiatechnology.de
- * Description: AUTO-GENERATED layer-0 loader for the VGT Omega encrypted artifact runtime. Do not edit manually.
+ * Description: AUTO-GENERATED layer-0 loader for the GeDefense WPR encrypted artifact runtime. Do not edit manually.
  * Version: __VGT_VERSION__
  * Requires at least: 6.0
  * Requires PHP: 8.1
@@ -79,7 +79,7 @@ $vgt_omega_plugin_file = __VGT_PLUGIN_PATH_LITERAL__;
 if (is_file($vgt_omega_plugin_file)) {
     require_once $vgt_omega_plugin_file;
 } else {
-    error_log('[VGT][LAYER0] VGT Omega plugin bootstrap file is missing.');
+    error_log('[VGT][LAYER0] GeDefense WPR plugin bootstrap file is missing.');
 }
 VGT_KERNEL;
 
@@ -95,8 +95,8 @@ VGT_KERNEL;
     /**
      * Build the complete kernel file source.
      *
-     * @param string $pluginFile absolute path of the main VGT Omega plugin file
-     * @param string $version    plugin version, e.g. 4.2.1
+     * @param string $pluginFile absolute path of the main GeDefense WPR plugin file
+     * @param string $version    plugin version, e.g. 4.2.3
      *
      * @throws \InvalidArgumentException when path or version are malformed
      */

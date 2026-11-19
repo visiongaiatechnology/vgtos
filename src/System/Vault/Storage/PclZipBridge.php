@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega PclZip bridge.
+ * GeDefense WPR PclZip bridge.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

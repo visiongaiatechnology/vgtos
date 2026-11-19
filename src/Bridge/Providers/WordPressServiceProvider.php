@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega WordPress service provider.
+ * GeDefense WPR WordPress service provider.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

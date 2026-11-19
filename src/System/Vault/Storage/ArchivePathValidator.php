@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega archive path validator.
+ * GeDefense WPR archive path validator.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

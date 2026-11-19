@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — artifact vault registry section.
+ * GeDefense WPR console — artifact vault registry section.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

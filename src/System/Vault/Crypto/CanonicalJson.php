@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega deterministic JSON canonicalisation.
+ * GeDefense WPR deterministic JSON canonicalisation.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

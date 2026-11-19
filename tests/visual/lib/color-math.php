@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega — shared colour math for the static audits.
+ * GeDefense WPR — shared colour math for the static audits.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

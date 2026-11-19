@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — WordPress admin dashboard entry point.
+ * GeDefense WPR console — WordPress admin dashboard entry point.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -21,7 +21,7 @@ use VGT\Omega\UI\Dashboard\Sections\OverviewSection;
 use VGT\Omega\UI\Dashboard\Sections\VaultSection;
 
 /**
- * Registers the "VGT Omega" admin page and renders the Glass 2100 console.
+ * Registers the "GeDefense WPR" admin page and renders the Glass 2100 console.
  *
  * The class is transport-thin: it owns the menu registration, the capability
  * gate and the page composition. All data collection lives in ConsoleData and
@@ -55,8 +55,8 @@ final class Dashboard
         }
 
         $hook = $bridge->addMenuMain(
-            'VGT Omega',
-            'VGT Omega',
+            'GeDefense WPR',
+            'GeDefense WPR',
             self::CAPABILITY,
             self::MENU_SLUG,
             [self::class, 'render'],
@@ -84,8 +84,8 @@ final class Dashboard
     {
         if (!current_user_can(self::CAPABILITY)) {
             wp_die(
-                esc_html('VGT Omega: your account is not allowed to open the security console.'),
-                esc_html('VGT Omega — access denied'),
+                esc_html('GeDefense WPR: your account is not allowed to open the security console.'),
+                esc_html('GeDefense WPR — access denied'),
                 ['response' => 403]
             );
         }
@@ -123,7 +123,7 @@ final class Dashboard
         <?php DiagnosticsSection::render($data); ?>
         <footer class="vgt-footer">
             <p class="vgt-footer__line">
-                Glass 2100 material system &middot; VGT Omega
+                Glass 2100 material system &middot; GeDefense WPR
                 <?php echo esc_html($data->version); ?> <?php echo esc_html($data->codeName); ?>
                 &middot; AGPL-3.0-or-later
             </p>

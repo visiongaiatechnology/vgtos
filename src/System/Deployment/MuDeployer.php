@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega layer-0 MU kernel deployer.
+ * GeDefense WPR layer-0 MU kernel deployer.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -14,7 +14,7 @@ namespace VGT\Omega\System\Deployment;
 use VGT\Omega\Core\Error\ExceptionReporter;
 
 /**
- * Deploys the generated VGT Omega MU kernel into the WordPress mu-plugins
+ * Deploys the generated GeDefense WPR MU kernel into the WordPress mu-plugins
  * directory so the vault runtime boots at layer 0, before regular plugins.
  *
  * Hardening:

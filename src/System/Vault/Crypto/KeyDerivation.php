@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega sovereign key derivation.
+ * GeDefense WPR sovereign key derivation.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

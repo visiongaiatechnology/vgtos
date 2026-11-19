@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega memory pre-flight guard.
+ * GeDefense WPR memory pre-flight guard.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

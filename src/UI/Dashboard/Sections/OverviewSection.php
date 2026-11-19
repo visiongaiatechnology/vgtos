@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — overview / state section.
+ * GeDefense WPR console — overview / state section.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -28,15 +28,19 @@ final class OverviewSection
     {
         $summary = $data->mountSummary();
         $isolation = self::isolationLabel($data);
+        $logoUrl = ConsoleData::logoUrl();
+        $logoSrc = $logoUrl !== '' ? $logoUrl : 'assets/ge-defense.png';
 
         ?>
 <header class="vgt-masthead">
     <div class="vgt-masthead__identity">
-        <span class="vgt-seal" aria-hidden="true"><?php Icon::render('vault', 'vgt-icon vgt-seal__glyph'); ?></span>
+        <span class="vgt-seal">
+            <img class="vgt-seal__logo" src="<?php echo esc_url($logoSrc); ?>" alt="" width="58" height="58" decoding="async">
+        </span>
         <div class="vgt-masthead__text">
-            <p class="vgt-eyebrow">VisionGaia Technology &middot; GeDefenseWP security console</p>
+            <p class="vgt-eyebrow">VisionGaia Technology &middot; <?php echo esc_html(ConsoleData::PRODUCT_SERIES); ?> WPR security console</p>
             <h1 class="vgt-title">
-                VGT Omega
+                <?php echo esc_html(ConsoleData::PRODUCT_NAME); ?>
                 <span class="vgt-title__version"><?php echo esc_html($data->version); ?></span>
                 <span class="vgt-title__codename"><?php echo esc_html($data->codeName); ?></span>
             </h1>

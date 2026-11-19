@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega Laravel bridge adapter.
+ * GeDefense WPR Laravel bridge adapter.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

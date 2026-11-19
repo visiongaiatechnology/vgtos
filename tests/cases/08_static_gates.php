@@ -115,11 +115,11 @@ $runner->test('Legacy v4.0/v4.1 files and namespaces are gone', function () use 
 });
 
 $runner->test('Version and license identity are consistent across artifacts', function () use ($runner, $projectRoot): void {
-    $runner->assertSame('4.2.1', trim((string) file_get_contents($projectRoot . '/VERSION')));
+    $runner->assertSame('4.2.3', trim((string) file_get_contents($projectRoot . '/VERSION')));
 
     $checks = [
-        '/vgt-os.php' => 'Version:           4.2.1',
-        '/src/Bootstrap/Plugin.php' => "VERSION = '4.2.1'",
+        '/vgt-os.php' => 'Version:           4.2.3',
+        '/src/Bootstrap/Plugin.php' => "VERSION = '4.2.3'",
         '/src/Bootstrap/Plugin.php' => 'AGPL-3.0-or-later',
         '/composer.json' => '"license": "AGPL-3.0-or-later"',
     ];
@@ -135,9 +135,20 @@ $runner->test('Version and license identity are consistent across artifacts', fu
     $readme = $projectRoot . '/README.md';
     if (is_file($readme)) {
         $readmeContent = (string) file_get_contents($readme);
-        $runner->assertContains('4.2.1', $readmeContent);
+        $runner->assertContains('4.2.3', $readmeContent);
+        $runner->assertContains('GeDefense WPR', $readmeContent);
+        $runner->assertContains('assets/ge-defense.png', $readmeContent);
+        $runner->assertContains('formerly VGT Omega', $readmeContent);
+        $runner->assertNotContains('<h1 align="center">VGT Omega</h1>', $readmeContent);
         $runner->assertNotContains('MIT License', $readmeContent);
     }
+
+    $runner->assertTrue(is_file($projectRoot . '/assets/ge-defense.png'), 'Official GeDefense logo is missing.');
+
+    $overview = (string) file_get_contents($projectRoot . '/src/UI/Dashboard/Sections/OverviewSection.php');
+    $runner->assertContains('vgt-seal__logo', $overview);
+    $runner->assertContains('ConsoleData::PRODUCT_NAME', $overview);
+    $runner->assertNotContains('vgt-seal__glyph', $overview);
 });
 
 $runner->test('Composer manifest is valid and exposes the PSR-4 root', function () use ($runner, $projectRoot): void {

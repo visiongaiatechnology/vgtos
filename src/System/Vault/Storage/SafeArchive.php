@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega safe archive extraction.
+ * GeDefense WPR safe archive extraction.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

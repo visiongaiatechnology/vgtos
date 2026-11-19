@@ -1,8 +1,8 @@
 /*
- * VGT OMEGA — GLASS 2100 SECURITY CONSOLE
+ * GEDEFENSE WPR — GLASS 2100 SECURITY CONSOLE
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
- * Product DNA: GeDefenseWP. Dark mineral graphite environment, sovereign
+ * Product DNA: GeDefense WPR. Dark mineral graphite environment, sovereign
  * blue-green pigment with titanium structure, restrained bronze for warnings.
  * One light source (upper left), five material levels (Z0-Z4), no background
  * grid, no neon, no external font or CDN. Offline and reduced-transparency
@@ -122,13 +122,14 @@
 }
 .vgt-masthead__identity { display: flex; gap: 18px; align-items: flex-start; min-width: 0; }
 .vgt-seal {
-  display: grid;  place-items: center;  flex: none;  width: 54px;  height: 54px;
-  border-radius: 15px;  color: var(--vgt-accent);
-  border: 1px solid rgba(60, 196, 176, 0.34);
-  background:
-    radial-gradient(120% 120% at 30% 8%, rgba(60, 196, 176, 0.2), transparent 62%),
-    linear-gradient(168deg, #14302e, #0d1a1c);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 10px 26px -20px #000;
+  display: grid;  place-items: center;  flex: none;  width: 58px;  height: 58px;
+  border-radius: 16px;  color: var(--vgt-accent);
+  background: radial-gradient(120% 120% at 32% 6%, rgba(216, 169, 108, 0.16), transparent 64%);
+  box-shadow: 0 10px 26px -20px #000;
+}
+.vgt-seal__logo {
+  display: block;  width: 58px;  height: 58px;  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
 }
 .vgt-seal__glyph { width: 27px; height: 27px; }
 .vgt-masthead__text { min-width: 0; }

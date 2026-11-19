@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega console — system diagnostics strip.
+ * GeDefense WPR console — system diagnostics strip.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

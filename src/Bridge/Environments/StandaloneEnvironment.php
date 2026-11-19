@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega standalone environment.
+ * GeDefense WPR standalone environment.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

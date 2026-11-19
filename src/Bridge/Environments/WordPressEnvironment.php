@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega WordPress environment.
+ * GeDefense WPR WordPress environment.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

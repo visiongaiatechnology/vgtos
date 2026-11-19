@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega artifact manifest.
+ * GeDefense WPR artifact manifest.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

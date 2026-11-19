@@ -2,7 +2,7 @@
   <img src="assets/sirdu.png" alt="Sir Quacksec — the VisionGaia Technology mascot" width="240">
 </p>
 
-<h1 align="center">VGT Omega System</h1>
+<h1 align="center">GeDefense WPR</h1>
 
 <p align="center">
   <strong>Sovereign, encrypted artifact runtime for WordPress.</strong><br>
@@ -10,10 +10,15 @@
 </p>
 
 <p align="center">
+  <img src="assets/ge-defense.png" alt="GeDefense logo" width="72"><br>
+  <strong>Part of the GeDefense security series</strong> · WordPress Runtime Security
+</p>
+
+<p align="center">
   <a href="LICENSE"><img alt="License: AGPL-3.0-or-later" src="https://img.shields.io/badge/License-AGPL--3.0--or--later-0f766e?style=for-the-badge"></a>
   <a href="https://www.php.net"><img alt="PHP 8.1+" src="https://img.shields.io/badge/PHP-8.1%2B-4f5b93?style=for-the-badge"></a>
   <a href="https://wordpress.org"><img alt="WordPress 6.0+" src="https://img.shields.io/badge/WordPress-6.0%2B-21759b?style=for-the-badge"></a>
-  <img alt="Version 4.2.1" src="https://img.shields.io/badge/Version-4.2.1-b0895b?style=for-the-badge">
+  <img alt="Version 4.2.3" src="https://img.shields.io/badge/Version-4.2.3-b0895b?style=for-the-badge">
   <a href="https://github.com/visiongaiatechnology/vgtos/actions/workflows/quality.yml"><img alt="Quality gate" src="https://github.com/visiongaiatechnology/vgtos/actions/workflows/quality.yml/badge.svg"></a>
 </p>
 
@@ -25,20 +30,38 @@
   <a href="docs/VERIFICATION.md">Verification</a>
 </p>
 
+> **Naming note — formerly VGT Omega.** The product is now **GeDefense WPR**, part of the
+> GeDefense security series. The plugin display name, admin menu, console title, footer and README
+> use the new brand. Internal compatibility is intentionally retained: the `VGT\Omega` namespace,
+> the `vgt://` stream protocol, option keys (`vgt_vault_*`), artifact format (`vgt-artifact/4.2`)
+> and the existing vault data are unchanged. Only the distribution slug/folder is now
+> `ge-defense-wpr`; existing installs should deactivate the old plugin folder and install the new
+> ZIP — vault artifacts continue to work because no cryptographic names changed.
+
 ---
 
-## Latest release — v4.2.1 “Console Readability”
+## Latest release — v4.2.3 “GeDefense Series Rebrand”
 
-> **Patch release:** every primary heading and body copy in the VGT security console now renders
-> **white** (`#ffffff`) or near-white instead of grey. Grey is reserved for tiny tertiary metadata
-> only. The contrast audit was re-run against the new tokens; no runtime, crypto or security logic
-> was changed in this release.
+> **Branding release:** VGT Omega becomes **GeDefense WPR** and joins the GeDefense series.
+> The official GeDefense shield logo replaces the previous inline SVG seal in the console and is
+> added to the README. No runtime, cryptography, storage, installer or authorization logic changed.
 
-| Area | What changed in 4.2.1 |
+| Area | What changed in 4.2.3 |
+|---|---|
+| **Product name** | VGT Omega → **GeDefense WPR** across plugin header, admin menu, console title, footer, CLI, README and docs. |
+| **Official logo** | The old `vgt-icon vgt-seal__glyph` inline SVG is replaced by the official `assets/ge-defense.png` GeDefense shield in the console masthead. |
+| **Series identity** | README positions GeDefense WPR explicitly as part of the GeDefense security series (alongside GeDefense Linux/GeDefenseWP work). |
+| **Compatibility** | `VGT\Omega` namespace, `vgt://` protocol, option keys, artifact format and existing vaults are unchanged. Distribution folder is now `ge-defense-wpr`. |
+
+### Previous patch — 4.2.3 “Console Readability”
+
+> Every primary heading and body copy in the GeDefense WPR console renders **white**
+> (`#ffffff`) or near-white instead of grey. Grey is reserved for tiny tertiary metadata only.
+
+| Area | What changed in 4.2.3 |
 |---|---|
 | **Console readability** | New text scale: `--vgt-text` = `#ffffff`, `--vgt-text-2` = `#f3f7f8`, `--vgt-muted` = `#cfdbdf`; explicit white rules for `h1`–`h4`, panel/empty/banner titles, row names and counters. |
 | **Contrast evidence** | `tests/visual/audit-contrast.php` re-run: 29/29 pairs pass WCAG 2.2 AA with increased ratios; rendered previews regenerated. |
-| **Scope** | CSS tokens/typography + version identity only. The 4.2.0 security baseline (see below) is unchanged. |
 
 ### 4.2.0 — Security & Integrity foundation
 
@@ -55,7 +78,7 @@
 | **AAD binding** | Every encryption and decryption is bound to `vgt:v4:<artifact-id>:<relative-path>`. Ciphertexts cannot be swapped inside an artifact. |
 | **Shared hosting** | No plaintext in APCu. Optional APCu caching stores ciphertext only and invalidates by prefix. Vault defaults to outside the document root. |
 | **Archive hardening** | Zip-slip (both slash directions), symlinks, compression bombs, entry/size/ratio limits and post-extraction tree verification. |
-| **Console** | A rebuilt admin console in the VGT Glass 2100 material system: diagnostics, recovery, accessible confirmation dialog, no CDN assets, no emoji icons. |
+| **Console** | A rebuilt admin console in the Glass 2100 material system: diagnostics, recovery, accessible confirmation dialog, no CDN assets, no emoji icons. |
 | **Supply chain** | Optional Ed25519 manifest signatures, canonical JSON payload, and a policy switch to require signatures. |
 | **Reference encryptor** | `bin/vgt-pack.php` with key generation, signing and classmap support, plus the normative [`ARTIFACT_SPEC.md`](ARTIFACT_SPEC.md). |
 
@@ -64,22 +87,22 @@ ledger: [`docs/VERIFICATION.md`](docs/VERIFICATION.md).
 
 ### Download
 
-* **Installable plugin ZIP:** [`vgt-omega-4.2.1.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.1.zip)
+* **Installable plugin ZIP:** [`ge-defense-wpr-4.2.3.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/ge-defense-wpr-4.2.3.zip)
 * **Checksums:** [`SHA256SUMS.txt`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/SHA256SUMS.txt)
-* **Source:** this repository, tag [`v4.2.1`](https://github.com/visiongaiatechnology/vgtos/releases/tag/v4.2.1)
+* **Source:** this repository, tag [`v4.2.3`](https://github.com/visiongaiatechnology/vgtos/releases/tag/v4.2.3)
 
 ---
 
 ## Table of contents
 
-- [Why VGT Omega](#why-vgt-omega)
+- [Why GeDefense WPR](#why-gedefense-wpr)
 - [How it works](#how-it-works)
 - [Architecture](#architecture)
 - [Security model](#security-model)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Quick start](#quick-start)
-- [The VGT Console](#the-vgt-console)
+- [The GeDefense WPR Console](#the-gedefense-wpr-console)
 - [Verification and tests](#verification-and-tests)
 - [Project structure](#project-structure)
 - [Compatibility and limitations](#compatibility-and-limitations)
@@ -89,12 +112,12 @@ ledger: [`docs/VERIFICATION.md`](docs/VERIFICATION.md).
 
 ---
 
-## Why VGT Omega
+## Why GeDefense WPR
 
 Commercial WordPress plugins face an uncomfortable trade-off: publish the source under GPL, or
-avoid WordPress. VGT Omega separates the *runtime* from the *payload*:
+avoid WordPress. GeDefense WPR separates the *runtime* from the *payload*:
 
-| The old reality | VGT Omega 4.2 |
+| The old reality | GeDefense WPR 4.2 |
 |---|---|
 | Proprietary plugin logic has to sit in readable files | AES-256-GCM artifacts; the vault contains only ciphertext blobs |
 | Encrypted loaders quietly fall back to `require` “for compatibility” | **No cleartext fallback exists.** Authenticated manifest or no execution |
@@ -225,21 +248,21 @@ No Composer packages, no JavaScript framework, no external CDN at runtime.
 
 ### Option A — Installable ZIP (recommended)
 
-1. Download [`vgt-omega-4.2.1.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/vgt-omega-4.2.1.zip).
+1. Download [`ge-defense-wpr-4.2.3.zip`](https://github.com/visiongaiatechnology/vgtos/releases/latest/download/ge-defense-wpr-4.2.3.zip).
 2. In WordPress: **Plugins → Add New → Upload Plugin**, choose the ZIP, install, activate.
-3. Open **VGT Omega** in the admin menu.
+3. Open **GeDefense WPR** in the admin menu.
 
-The ZIP extracts to `wp-content/plugins/vgt-omega/` and contains the runtime, the reference
-encryptor CLI and the documentation. Tests are not shipped inside the install package.
+The ZIP extracts to `wp-content/plugins/ge-defense-wpr/` and contains the runtime, the reference
+encryptor CLI, the documentation and the dependency-free test suite for independent verification.
 
 ### Option B — From source
 
 ```bash
 git clone https://github.com/visiongaiatechnology/vgtos.git
-cp -R vgtos /path/to/wp-content/plugins/vgt-omega
+cp -R vgtos /path/to/wp-content/plugins/ge-defense-wpr
 ```
 
-Activate **VGT Omega System** in *Plugins*. The plugin auto-deploys an atomic layer-0
+Activate **GeDefense WPR** in *Plugins*. The plugin auto-deploys an atomic layer-0
 mu-plugin kernel on admin requests. If `wp-content/mu-plugins` is not writable, it keeps
 working as a regular plugin — the console reports `layer-0 = false`.
 
@@ -278,7 +301,7 @@ php bin/vgt-pack.php \
 
 ### 2. Deploy in the console
 
-**VGT Omega → Deploy artifact**: select the ZIP, paste the cloud key, optionally choose an
+**GeDefense WPR → Deploy artifact**: select the ZIP, paste the cloud key, optionally choose an
 existing artifact for a zero-downtime rotation, deploy. The console reports
 `installed`/`rotated`; the vault registry shows the artifact as **SECURE RUNTIME ACTIVE**.
 
@@ -299,9 +322,9 @@ The byte-level container and manifest format is documented in
 
 ---
 
-## The VGT Console
+## The GeDefense WPR Console
 
-The admin console follows the **VGT Glass 2100** material system: layered glass surfaces
+The admin console follows the **Glass 2100** material system: layered glass surfaces
 (Z0–Z4), a product-specific mineral blue-green palette with OKLCH tokens and sRGB fallbacks,
 a single light model, no background grids, no neon and no emoji icons. It is built for
 security work, not for a hacker movie:
@@ -351,12 +374,13 @@ deny enforcement) which this build environment cannot provide. Those items are l
 ## Project structure
 
 ```
-vgt-omega/
+ge-defense-wpr/
 ├── vgt-os.php                    # plugin header + bootstrap entry
-├── VERSION                       # central version source (4.2.1)
+├── VERSION                       # central version source (4.2.3)
 ├── composer.json                 # PSR-4 "VGT\\Omega\\" => src/
 ├── README.md · CHANGELOG.md · SECURITY.md · ARTIFACT_SPEC.md · legal.md
 ├── assets/sirdu.png              # Sir Quacksec, VGT mascot
+├── assets/ge-defense.png         # official GeDefense shield logo
 ├── bin/vgt-pack.php              # reference encryptor CLI
 ├── docs/
 │   ├── VERIFICATION.md           # test ledger, audit summary, limitations
@@ -434,7 +458,7 @@ systems you do not own or have written permission to test. Full policy:
 
 ## Legal and license
 
-VGT Omega is licensed under the **GNU Affero General Public License v3.0 or later**
+GeDefense WPR is licensed under the **GNU Affero General Public License v3.0 or later**
 ([`LICENSE`](LICENSE)). The interoperability analysis for loading independent artifacts through
 WordPress hook interfaces is documented in [`legal.md`](legal.md) — it is not legal advice.
 

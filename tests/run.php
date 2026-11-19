@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega test entry point.
+ * GeDefense WPR test entry point.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega vault manager facade.
+ * GeDefense WPR vault manager facade.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega archive directory validator.
+ * GeDefense WPR archive directory validator.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

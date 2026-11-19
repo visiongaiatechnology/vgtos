@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega archive consumption limits.
+ * GeDefense WPR archive consumption limits.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *

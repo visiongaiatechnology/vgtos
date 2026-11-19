@@ -1,6 +1,6 @@
 <?php
 /**
- * VGT Omega extracted tree verifier.
+ * GeDefense WPR extracted tree verifier.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
