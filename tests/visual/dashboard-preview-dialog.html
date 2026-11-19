@@ -1,0 +1,406 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>VGT Omega — delete confirmation dialog preview</title><link rel="stylesheet" href="../../src/UI/Dashboard/assets/glass-2100.css">    <style>
+      html, body { margin: 0; padding: 0; background: #0a0f12; }
+      body.vgt-preview {
+        padding: 20px clamp(12px, 2vw, 28px) 48px;
+        background:
+          radial-gradient(120% 90% at 8% -12%, rgba(42, 168, 151, 0.12), transparent 56%),
+          #0a0f12;
+      }
+      .vgt-preview-bar {
+        display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px;
+        max-width: 1720px; margin: 0 auto 10px;
+        font: 500 10.5px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace;
+        letter-spacing: 0.14em; text-transform: uppercase; color: #6f7f86;
+      }
+      .vgt-preview-bar b { color: #a9b6bc; font-weight: 600; }
+    </style></head><body class="vgt-preview"><div class="vgt-preview-bar"><span><b>VGT Omega</b> &middot; Glass 2100 preview harness &middot; WordPress admin chrome omitted</span><span id="vgt-preview-viewport"></span></div><div class="vgt-console" data-vgt-console-state="ready">
+    <a class="vgt-skip" href="#vgt-main">Skip to console content</a>
+    <header class="vgt-masthead">
+    <div class="vgt-masthead__identity">
+        <span class="vgt-seal" aria-hidden="true"><svg class="vgt-icon vgt-seal__glyph" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4.5 6.2v5.6c0 4.3 3.1 7.7 7.5 9.2 4.4-1.5 7.5-4.9 7.5-9.2V6.2L12 3Z"/><circle cx="12" cy="11" r="2.1"/><path d="M12 13.1V16"/></svg></span>
+        <div class="vgt-masthead__text">
+            <p class="vgt-eyebrow">VisionGaia Technology &middot; GeDefenseWP security console</p>
+            <h1 class="vgt-title">
+                VGT Omega
+                <span class="vgt-title__version">4.2.0</span>
+                <span class="vgt-title__codename">OMEGA</span>
+            </h1>
+            <p class="vgt-lede">
+                Sovereign encrypted artifact vault for WordPress. Artifacts are decrypted into RAM and
+                mounted only after an authenticated manifest, signature and classmap check pass.
+            </p>
+        </div>
+    </div>
+    <dl class="vgt-statebar">
+        <div class="vgt-statebar__item">
+            <dt class="vgt-statebar__label">Kernel</dt>
+            <dd class="vgt-statebar__value">Layer-0 kernel</dd>
+        </div>
+        <div class="vgt-statebar__item">
+            <dt class="vgt-statebar__label">Vault isolation</dt>
+            <dd class="vgt-statebar__value">Outside webroot</dd>
+        </div>
+        <div class="vgt-statebar__item">
+            <dt class="vgt-statebar__label">System state</dt>
+            <dd class="vgt-statebar__value">
+                <span class="vgt-pill vgt-pill--ok"><svg class="vgt-icon vgt-pill__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12.6 4.2 4.2L19 7.2"/></svg><span class="vgt-pill__label">Operational</span></span>            </dd>
+        </div>
+    </dl>
+</header>
+
+
+
+
+<section class="vgt-integrity" aria-labelledby="vgt-integrity-title">
+    <div class="vgt-integrity__head">
+        <h2 id="vgt-integrity-title" class="vgt-section-title">Vault integrity</h2>
+        <p class="vgt-integrity__reading">
+                            <b>2</b> of
+                <b>3</b> artifacts mounted
+                    </p>
+    </div>
+    <div class="vgt-rail" aria-hidden="true">
+                                <span class="vgt-rail__seg vgt-rail__seg--mounted"></span>
+                        <span class="vgt-rail__seg vgt-rail__seg--mounted"></span>
+                        <span class="vgt-rail__seg vgt-rail__seg--locked"></span>
+                                    </div>
+    <ul class="vgt-legend" role="list">
+        <li class="vgt-legend__item"><span class="vgt-legend__dot vgt-legend__dot--mounted" aria-hidden="true"></span>Mounted <b>2</b></li>
+        <li class="vgt-legend__item"><span class="vgt-legend__dot vgt-legend__dot--locked" aria-hidden="true"></span>Locked <b>1</b></li>
+        <li class="vgt-legend__item"><span class="vgt-legend__dot vgt-legend__dot--failed" aria-hidden="true"></span>Failed <b>0</b></li>
+    </ul>
+</section>
+            <main class="vgt-console__body" id="vgt-main" tabindex="-1">
+        <div class="vgt-notice vgt-notice--ok" role="status"><svg class="vgt-icon vgt-notice__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12.6 4.2 4.2L19 7.2"/></svg><div class="vgt-notice__body"><p class="vgt-notice__title">Operation complete</p><p class="vgt-notice__text">Artifact &quot;Aegis Core Firewall&quot; was deployed and is mounted. 6 files verified.</p><p class="vgt-notice__ref">Reference <code>VGT-REF-9C41B7E2</code> — quote it when contacting support.</p></div></div>        <div class="vgt-workbench">
+            <section class="vgt-panel vgt-panel--opaque vgt-vault" id="vgt-vault" aria-labelledby="vgt-vault-title">
+    <header class="vgt-panel__head">
+        <div class="vgt-panel__heading">
+            <p class="vgt-eyebrow">Registry</p>
+            <h2 id="vgt-vault-title" class="vgt-panel__title">Artifact vault</h2>
+            <p class="vgt-panel__sub">
+                                    Verified artifacts decrypted into RAM for this request only &mdash; nothing is re-written to disk.
+                            </p>
+        </div>
+        <p class="vgt-vault__count">
+            <span class="vgt-vault__count-value">3</span>
+            <span class="vgt-vault__count-label">artifacts</span>
+        </p>
+    </header>
+
+        <div class="vgt-vault__columns" aria-hidden="true">
+        <span>Artifact</span>
+        <span>Package details</span>
+        <span>Actions</span>
+    </div>
+    <ol class="vgt-vault__list" role="list">
+                <li class="vgt-row">
+            <div class="vgt-row__identity">
+                <div class="vgt-row__titleline">
+                    <h3 class="vgt-row__name">Aegis Core Firewall</h3>
+                    <span class="vgt-pill vgt-pill--ok"><svg class="vgt-icon vgt-pill__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12.6 4.2 4.2L19 7.2"/></svg><span class="vgt-pill__label">Mounted</span></span>                </div>
+                <p class="vgt-row__id">ID <code>vgt_7f3a1c9e2b5d4f60a8c1e3b7</code></p>
+                <p class="vgt-row__verdict">Verified and decrypted into RAM for this request only.</p>
+            </div>
+            <dl class="vgt-row__meta">
+                <div class="vgt-row__pair">
+                    <dt>Entry</dt>
+                    <dd><code>aegis-core.php</code></dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Files</dt>
+                    <dd>6</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Format</dt>
+                    <dd>vgt-artifact/4.2</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Signature</dt>
+                    <dd>Verified</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Last rotation</dt>
+                    <dd>2026-11-19 11:20</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Load mode</dt>
+                    <dd>RAM only</dd>
+                </div>
+            </dl>
+            <form class="vgt-row__actions vgt-delete-form"
+                  action="https://example.test/wp-admin/admin-post.php"
+                  method="post"
+                  data-artifact-name="Aegis Core Firewall"
+                  data-artifact-id="vgt_7f3a1c9e2b5d4f60a8c1e3b7">
+                <input type="hidden" name="action" value="vgt_delete_artifact">
+                <input type="hidden" name="artifact_id" value="vgt_7f3a1c9e2b5d4f60a8c1e3b7">
+                <input type="hidden" name="_wpnonce" value="preview-nonce-vgt_action">                <button type="submit" class="vgt-btn vgt-btn--danger-ghost"
+                        aria-label="Delete artifact Aegis Core Firewall permanently">
+                    <svg class="vgt-icon vgt-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.2 7h15.6"/><path d="M9.2 7V4.8h5.6V7"/><path d="m6.3 7 1 12.4h9.4L18 7"/><path d="M10.4 10.8v5.2M13.6 10.8v5.2"/></svg>                    <span>Delete</span>
+                </button>
+            </form>
+        </li>
+                <li class="vgt-row">
+            <div class="vgt-row__identity">
+                <div class="vgt-row__titleline">
+                    <h3 class="vgt-row__name">Helios Telemetry Relay</h3>
+                    <span class="vgt-pill vgt-pill--ok"><svg class="vgt-icon vgt-pill__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12.6 4.2 4.2L19 7.2"/></svg><span class="vgt-pill__label">Mounted</span></span>                </div>
+                <p class="vgt-row__id">ID <code>vgt_c41d8b72f0a934e5b6d2c8f1</code></p>
+                <p class="vgt-row__verdict">Verified and decrypted into RAM for this request only.</p>
+            </div>
+            <dl class="vgt-row__meta">
+                <div class="vgt-row__pair">
+                    <dt>Entry</dt>
+                    <dd><code>helios-relay.php</code></dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Files</dt>
+                    <dd>3</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Format</dt>
+                    <dd>vgt-artifact/4.2</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Signature</dt>
+                    <dd>Verified</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Last rotation</dt>
+                    <dd>2026-11-18 13:00</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Load mode</dt>
+                    <dd>RAM only</dd>
+                </div>
+            </dl>
+            <form class="vgt-row__actions vgt-delete-form"
+                  action="https://example.test/wp-admin/admin-post.php"
+                  method="post"
+                  data-artifact-name="Helios Telemetry Relay"
+                  data-artifact-id="vgt_c41d8b72f0a934e5b6d2c8f1">
+                <input type="hidden" name="action" value="vgt_delete_artifact">
+                <input type="hidden" name="artifact_id" value="vgt_c41d8b72f0a934e5b6d2c8f1">
+                <input type="hidden" name="_wpnonce" value="preview-nonce-vgt_action">                <button type="submit" class="vgt-btn vgt-btn--danger-ghost"
+                        aria-label="Delete artifact Helios Telemetry Relay permanently">
+                    <svg class="vgt-icon vgt-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.2 7h15.6"/><path d="M9.2 7V4.8h5.6V7"/><path d="m6.3 7 1 12.4h9.4L18 7"/><path d="M10.4 10.8v5.2M13.6 10.8v5.2"/></svg>                    <span>Delete</span>
+                </button>
+            </form>
+        </li>
+                <li class="vgt-row">
+            <div class="vgt-row__identity">
+                <div class="vgt-row__titleline">
+                    <h3 class="vgt-row__name">Atlas Recovery Suite</h3>
+                    <span class="vgt-pill vgt-pill--neutral"><svg class="vgt-icon vgt-pill__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5" y="10.6" width="14" height="9.4" rx="2.1"/><path d="M8.6 10.6V8.1a3.4 3.4 0 0 1 6.8 0v2.5"/></svg><span class="vgt-pill__label">Locked</span></span>                </div>
+                <p class="vgt-row__id">ID <code>vgt_9b6e2f05d7c3481a4e9b0c6d</code></p>
+                <p class="vgt-row__verdict">The decryption key for this node is unavailable, so nothing was mounted.</p>
+            </div>
+            <dl class="vgt-row__meta">
+                <div class="vgt-row__pair">
+                    <dt>Entry</dt>
+                    <dd><code>atlas-recovery.php</code></dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Files</dt>
+                    <dd>4</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Format</dt>
+                    <dd>vgt-artifact/4.2</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Signature</dt>
+                    <dd>Unsigned</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Last rotation</dt>
+                    <dd>2026-11-16 12:40</dd>
+                </div>
+                <div class="vgt-row__pair">
+                    <dt>Load mode</dt>
+                    <dd>Not loaded</dd>
+                </div>
+            </dl>
+            <form class="vgt-row__actions vgt-delete-form"
+                  action="https://example.test/wp-admin/admin-post.php"
+                  method="post"
+                  data-artifact-name="Atlas Recovery Suite"
+                  data-artifact-id="vgt_9b6e2f05d7c3481a4e9b0c6d">
+                <input type="hidden" name="action" value="vgt_delete_artifact">
+                <input type="hidden" name="artifact_id" value="vgt_9b6e2f05d7c3481a4e9b0c6d">
+                <input type="hidden" name="_wpnonce" value="preview-nonce-vgt_action">                <button type="submit" class="vgt-btn vgt-btn--danger-ghost"
+                        aria-label="Delete artifact Atlas Recovery Suite permanently">
+                    <svg class="vgt-icon vgt-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.2 7h15.6"/><path d="M9.2 7V4.8h5.6V7"/><path d="m6.3 7 1 12.4h9.4L18 7"/><path d="M10.4 10.8v5.2M13.6 10.8v5.2"/></svg>                    <span>Delete</span>
+                </button>
+            </form>
+        </li>
+            </ol>
+    <p class="vgt-vault__footnote">
+        Deletion is permanent and requires confirmation. A failed signature check keeps an artifact
+        locked instead of executing it &mdash; verify the key and package before retrying.
+    </p>
+    </section>
+                    <section class="vgt-panel vgt-panel--glass vgt-deploy" id="vgt-deploy" aria-labelledby="vgt-deploy-title">
+    <header class="vgt-panel__head vgt-deploy__head">
+        <div class="vgt-panel__heading">
+            <p class="vgt-eyebrow">Deployment</p>
+            <h2 id="vgt-deploy-title" class="vgt-panel__title">Deploy or rotate artifact</h2>
+            <p class="vgt-panel__sub">Signed package plus its hex key. Verification happens before anything is mounted.</p>
+        </div>
+        <button type="button" class="vgt-btn vgt-btn--quiet vgt-deploy__toggle"
+                aria-expanded="true" aria-controls="vgt-deploy-body" data-vgt-deploy-toggle hidden>
+            <span data-vgt-deploy-toggle-label>Show deployment</span>
+            <svg class="vgt-icon vgt-deploy__chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m7.2 10.2 4.8 4.8 4.8-4.8"/></svg>        </button>
+    </header>
+    <div class="vgt-deploy__body" id="vgt-deploy-body">
+                        <form class="vgt-deploy__form"
+              action="https://example.test/wp-admin/admin-post.php"
+              method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="action" value="vgt_install_artifact">
+            <input type="hidden" name="_wpnonce" value="preview-nonce-vgt_action">            <fieldset class="vgt-fieldset">
+                <legend class="vgt-sr-only">Artifact package and decryption key</legend>
+                <div class="vgt-field">
+                    <label class="vgt-label" for="vgt-artifact-file">Artifact package</label>
+                    <input class="vgt-input vgt-input--file" type="file" id="vgt-artifact-file" name="artifact"
+                           accept=".zip" required                           aria-describedby="vgt-hint-file">
+                    <p class="vgt-hint" id="vgt-hint-file">
+                        Signed <code>.zip</code> up to 16 MiB containing <code>vgt_manifest.vgt</code>.
+                    </p>
+                </div>
+                <div class="vgt-field">
+                    <label class="vgt-label" for="vgt-license-key">Decryption key</label>
+                    <input class="vgt-input vgt-input--mono" type="text" id="vgt-license-key" name="license_key"
+                           autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text"
+                           required pattern="[a-fA-F0-9]{64}" maxlength="64"
+                           placeholder="64 hexadecimal characters"
+                           aria-describedby="vgt-hint-key">
+                    <p class="vgt-hint" id="vgt-hint-key">
+                        The 64-character hex key shipped with this package. It is not stored by the console.
+                    </p>
+                </div>
+                <div class="vgt-field">
+                    <label class="vgt-label" for="vgt-artifact-name">
+                        Artifact name <span class="vgt-label__optional">optional</span>
+                    </label>
+                    <input class="vgt-input" type="text" id="vgt-artifact-name" name="artifact_name"
+                           maxlength="120" autocomplete="off" placeholder="Aegis Core Firewall"
+                           aria-describedby="vgt-hint-name">
+                    <p class="vgt-hint" id="vgt-hint-name">Shown in the registry. Defaults to the manifest name.</p>
+                </div>
+                <div class="vgt-field">
+                    <label class="vgt-label" for="vgt-rotate-id">Rotation target</label>
+                    <select class="vgt-input vgt-select" id="vgt-rotate-id" name="rotate_id"
+                            aria-describedby="vgt-hint-rotate">
+                        <option value="">Install as a new artifact</option>
+                                                <option value="vgt_7f3a1c9e2b5d4f60a8c1e3b7">
+                            Replace Aegis Core Firewall (7f3a1c9e)
+                        </option>
+                                                <option value="vgt_c41d8b72f0a934e5b6d2c8f1">
+                            Replace Helios Telemetry Relay (c41d8b72)
+                        </option>
+                                                <option value="vgt_9b6e2f05d7c3481a4e9b0c6d">
+                            Replace Atlas Recovery Suite (9b6e2f05)
+                        </option>
+                                            </select>
+                    <p class="vgt-hint" id="vgt-hint-rotate">
+                        Rotation is atomic: the running version stays live until the replacement is staged
+                        and verified.
+                    </p>
+                </div>
+                <button type="submit" class="vgt-btn vgt-btn--primary">
+                    <span>Deploy to vault</span>
+                    <svg class="vgt-icon vgt-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.8 12h13.4"/><path d="m13.2 6.8 5.2 5.2-5.2 5.2"/></svg>                </button>
+            </fieldset>
+        </form>
+        <p class="vgt-deploy__safety">
+            Fail-closed by design: if the manifest, signature or classmap check fails, the vault stays
+            closed instead of executing unverified code.
+        </p>
+    </div>
+</section>
+                </div>
+        <section class="vgt-panel vgt-panel--opaque vgt-diag" id="vgt-diagnostics" aria-labelledby="vgt-diag-title">
+    <header class="vgt-panel__head">
+        <div class="vgt-panel__heading">
+            <p class="vgt-eyebrow">Telemetry</p>
+            <h2 id="vgt-diag-title" class="vgt-panel__title">System diagnostics</h2>
+            <p class="vgt-panel__sub">
+                Captured 2026-11-19 15:42 (site time). Read-only &mdash; no key material,
+                salt value or pepper is displayed.
+            </p>
+        </div>
+                    <span class="vgt-pill vgt-pill--ok"><svg class="vgt-icon vgt-pill__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12.6 4.2 4.2L19 7.2"/></svg><span class="vgt-pill__label">Collected</span></span>            </header>
+
+        <div class="vgt-diag__grid">
+        <div class="vgt-diag__group">
+    <h3 class="vgt-diag__group-title">Environment</h3>
+    <dl class="vgt-diag__list">
+        <div class="vgt-diag__row"><dt class="vgt-diag__label">Platform</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">WordPress / layer-0 kernel</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">PHP runtime</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">8.3.14</span><span class="vgt-diag__suffix">minimum 8.1.0</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">OpenSSL</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">OpenSSL 3.2.1 30 Jan 2024</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">AES-256-GCM</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Available</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Sodium signatures</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Available</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Archive support</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">ZipArchive</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">APCu ciphertext cache</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Enabled</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">OPcache</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Enabled</span><span class="vgt-diag__suffix">accelerates console requests</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">HTTPS transport</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Yes</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Multisite</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">No</span></dd></div>    </dl>
+</div>
+                <div class="vgt-diag__group">
+    <h3 class="vgt-diag__group-title">Cryptography &amp; keys</h3>
+    <dl class="vgt-diag__list">
+        <div class="vgt-diag__row"><dt class="vgt-diag__label">Artifact format</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">vgt-artifact/4.2</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Cipher</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">AES-256-GCM</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Key derivation</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">HKDF-SHA256 (dual-factor)</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Binding mode</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">Soft (host-migration safe)</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Signature policy</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Required</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Key pepper</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Present</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">WordPress salts</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">4 of 4 present</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">AEAD binding (AAD)</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Enabled</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Key fingerprint</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--muted">7ce41a90b2d6f813</span></dd></div>    </dl>
+    <p class="vgt-diag__note">
+        Smart compression: VGT_RAW &lt;= 16 KiB / VGT_GZ &gt; 16 KiB    </p>
+</div>
+                <div class="vgt-diag__group">
+    <h3 class="vgt-diag__group-title">Storage &amp; runtime</h3>
+    <dl class="vgt-diag__list">
+        <div class="vgt-diag__row"><dt class="vgt-diag__label">Vault isolation</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Outside webroot</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Vault location</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--muted">wp-content/vgt-vault</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Vault storage</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Writable</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Registered artifacts</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">3</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Mount state</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">2 mounted · 1 locked · 0 failed</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Safe mode</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Off</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">Layer-0 kernel</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Active</span><span class="vgt-diag__suffix">mu-plugin bootstraps the vault before plugins</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">vgt:// stream wrapper</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value vgt-diag__value--ok">Registered</span></dd></div>        <div class="vgt-diag__row"><dt class="vgt-diag__label">RAM headroom</dt><dd class="vgt-diag__cell"><span class="vgt-diag__value">62 %</span><meter class="vgt-meter" min="0" max="100" low="25" high="60" optimum="100" value="62" aria-label="RAM headroom">62 %</meter><span class="vgt-diag__suffix">184.8 MiB of 300 MiB free</span></dd></div>    </dl>
+    </div>
+            </div>
+    </section>
+                <footer class="vgt-footer">
+            <p class="vgt-footer__line">
+                Glass 2100 material system &middot; VGT Omega
+                4.2.0 OMEGA                &middot; AGPL-3.0-or-later
+            </p>
+            <p class="vgt-footer__line vgt-footer__meta">
+                PHP 8.3.14                (minimum 8.1.0)
+                &middot; snapshot 2026-11-19 15:42 (site time)                &middot; Vault booted            </p>
+        </footer>
+    </main>
+    <nav class="vgt-mobilebar" aria-label="Console quick actions">
+        <a class="vgt-mobilebar__action" href="#vgt-vault">
+            <svg class="vgt-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 4.5 6.2v5.6c0 4.3 3.1 7.7 7.5 9.2 4.4-1.5 7.5-4.9 7.5-9.2V6.2L12 3Z"/><circle cx="12" cy="11" r="2.1"/><path d="M12 13.1V16"/></svg>            <span>Vault</span>
+        </a>
+        <a class="vgt-mobilebar__action vgt-mobilebar__action--primary" href="#vgt-deploy" data-vgt-open-deploy>
+            <svg class="vgt-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.7-6"/><path d="M20 4.2V8.4h-4.2"/></svg>            <span>Deploy</span>
+        </a>
+        <a class="vgt-mobilebar__action" href="#vgt-diagnostics">
+            <svg class="vgt-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 13.2h3.8l2.6-6.4 4.2 12 2.6-5.6H21"/></svg>            <span>Diagnostics</span>
+        </a>
+    </nav>
+    <dialog id="vgt-confirm-dialog" class="vgt-dialog" aria-labelledby="vgt-confirm-title" aria-describedby="vgt-confirm-desc">
+    <form method="dialog" class="vgt-dialog__panel">
+        <p class="vgt-eyebrow vgt-dialog__eyebrow">Destructive action</p>
+        <h2 id="vgt-confirm-title" class="vgt-dialog__title">Delete artifact permanently?</h2>
+        <p id="vgt-confirm-desc" class="vgt-dialog__text">
+            This removes the encrypted artifact package and every encrypted blob from the vault.
+            Any code previously mounted from it stops loading immediately. The artifact cannot be
+            recovered from this installation.
+        </p>
+        <dl class="vgt-dialog__target">
+            <div>
+                <dt>Artifact</dt>
+                <dd data-vgt-confirm-name>&mdash;</dd>
+            </div>
+            <div>
+                <dt>Artifact ID</dt>
+                <dd><code data-vgt-confirm-id>&mdash;</code></dd>
+            </div>
+        </dl>
+        <div class="vgt-dialog__actions">
+            <button type="submit" value="cancel" class="vgt-btn vgt-btn--quiet" data-vgt-cancel>
+                <span>Keep artifact</span>
+            </button>
+            <button type="submit" value="confirm" class="vgt-btn vgt-btn--danger" data-vgt-confirm>
+                <svg class="vgt-icon vgt-btn__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.2 7h15.6"/><path d="M9.2 7V4.8h5.6V7"/><path d="m6.3 7 1 12.4h9.4L18 7"/><path d="M10.4 10.8v5.2M13.6 10.8v5.2"/></svg>                <span>Delete permanently</span>
+            </button>
+        </div>
+    </form>
+</dialog>
+        </div>
+        <script>document.getElementById("vgt-preview-viewport").textContent = window.innerWidth + " \u00d7 " + window.innerHeight + " px";</script><script src="../../src/UI/Dashboard/assets/console.js"></script><script>try { document.querySelector(".vgt-delete-form button[type=submit]").click(); } catch (error) {}</script></body></html>
